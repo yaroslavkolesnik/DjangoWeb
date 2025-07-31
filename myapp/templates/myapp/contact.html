@@ -3,8 +3,53 @@
 {% block title %}Контакты - Мой сайт Django{% endblock %}
 
 {% block content %}
-    <h1>Свяжитесь с нами</h1>
-    <p>Вы можете связаться с нами по почте: info@mysite.com</p>
-    <p>Или по телефону: +123 456 7890</p>
-    <p><a href="{% url 'home' %}">На главную</a></p>
+
+{% load static %}
+    <section id="contact" class="page">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">Свяжитесь с нами</h1>
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">Мы всегда рады ответить на ваши вопросы и помочь с выбором дизайнерских вещей!</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">Наши контакты</h2>
+          <ul class="text-base sm:text-lg text-gray-600 space-y-2">
+            <li class="flex items-center">
+              <svg class="w-5 h-5 mr-2 text-gray-800" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884zM18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+              Email: <a href="#" class="text-gray-800 hover:underline ml-1">info@designshop.ru</a>
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 mr-2 text-gray-800" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.46 1.043l-1.134.772a11.164 11.164 0 005.427 5.427l.772-1.134a1 1 0 011.043-.46l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path></svg>
+              Телефон: <a href="#" class="text-gray-800 hover:underline ml-1">+7 (999) 123-45-67</a>
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 mr-2 text-gray-800" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+              Адрес: г. Москва, ул. Дизайна, д. 10
+            </li>
+          </ul>
+          <div class="mt-6">
+            <img src="{% static 'images/Photo.png' %}" alt="Карта" class="w-full h-40 sm:h-48 object-cover rounded-lg shadow-md">
+            <p class="text-sm text-gray-500 mt-2">Карта местоположения (заглушка)</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">Напишите нам</h2>
+          <div class="space-y-4">
+            <div>
+              <label for="name" class="block text-base sm:text-lg text-gray-600 mb-1">Имя</label>
+              <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800" placeholder="Ваше имя">
+            </div>
+            <div>
+              <label for="email" class="block text-base sm:text-lg text-gray-600 mb-1">Email</label>
+              <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800" placeholder="Ваш email">
+            </div>
+            <div>
+              <label for="message" class="block text-base sm:text-lg text-gray-600 mb-1">Сообщение</label>
+              <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-800" placeholder="Ваше сообщение"></textarea>
+            </div>
+            <button class="w-full bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition">Отправить</button>
+          </div>
+        </div>
+      </div>
+    </section>
 {% endblock content %}

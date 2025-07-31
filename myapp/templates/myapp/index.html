@@ -5,160 +5,55 @@
 {% block content %} {# Заполняем основной блок контента #}
 
 {% load static %}
-     <div class="container">
-            <div class="maim__menu">
-                <h2 class="maim__menu--logo">View all products</h2>
-                <div class="meun__select">
-                    <div class="left__select">
-
-                            <select class="select__first size__select">
-                                <option><span class="left__select--text">Category</span></option>
-
-                            </select>
-
-
-                            <select class="select__second size__select">
-                                <option><span>Product type</span></option>
-
-                            </select>
-
-
-                            <select class="select__third size__select">
-                                <option><a class="bb">Price</a></option>
-
-                            </select>
-
-
-                            <select class="select__quarters size__select">
-                                <option><span></span>Brand</option>
-
-                            </select>
-
-                    </div>
-
-                    <div class="right__select">
-                        <label><span class="right__select--text">Sorting by:</span></label>
-
-                        <select class="select__fifth size__select">
-                            <option><span>Date added</span></option>
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-            <div class="main__cart">
-                <div class="cart__container ">
-                    <div class="product-card ">
-                        <a href="#" target="_blank">
-                            <img  src="{% static 'images/Photo (3).png' %}" alt="Photo">
-                            <h3 class="cart__title">The Dandy chair</h3>
-                            <span  class="cart__price">£250</span>
-                        </a>
-
-                    </div>
-
-                    <div class="product-card">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo (2).png' %}"  alt="Photo">
-                            <h3 class="cart__title">Rustic Vase Set</h3>
-                            <span  class="cart__price">£155</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card  ">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo (1).png' %}" alt="Photo">
-                            <h3 class="cart__title">The Silky Vase</h3>
-                            <span  class="cart__price"> £125</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card  ">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo.png' %}" alt="Photo">
-                            <h3 class="cart__title"> The Lucy Lamp</h3>
-                            <span  class="cart__price"> £399</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card ">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo (3).png' %}" alt="Photo">
-                            <h3 class="cart__title">The Dandy chair</h3>
-                            <span  class="cart__price">£250</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card  ">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo (2).png' %}" alt="Photo">
-                            <h3 class="cart__title">Rustic Vase Set</h3>
-                            <span  class="cart__price">£155</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card ">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo (1).png' %}"" alt="Photo">
-                            <h3 class="cart__title">The Silky Vase</h3>
-                            <span  class="cart__price"> £125</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card  ">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo.png' %}" alt="Photo">
-                            <h3 class="cart__title"> The Lucy Lamp</h3>
-                            <span  class="cart__price"> £399</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo (3).png' %}" alt="Photo">
-                            <h3 class="cart__title">The Dandy chair</h3>
-                            <span  class="cart__price">£250</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo (2).png' %}" alt="Photo">
-                            <h3 class="cart__title">Rustic Vase Set</h3>
-                            <span class="cart__price">£155</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo (1).png' %}" alt="Photo">
-                            <h3 class="cart__title">The Silky Vase</h3>
-                            <span  class="cart__price"> £125</span>
-                        </a>
-                    </div>
-
-                    <div class="product-card">
-                        <a href="#" target="_blank">
-                            <img src="{% static 'images/Photo.png' %}" alt="Photo">
-                            <h3 class="cart__title"> The Lucy Lamp</h3>
-                            <span  class="cart__price"> £399</span>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="button__cart">
-                <button class="button"><a class="button__text" href="#" target="_blank">View collection</a></button>
-            </div>
+<section id="home" class="page">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">Добро пожаловать в DesignShop</h1>
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">Откройте для себя уникальные дизайнерские вещи, созданные для вашего стиля и индивидуальности.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+          <a href="{% url 'show' %}">
+            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская сумка" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерская сумка</h3>
+            <p class="text-gray-600 text-base sm:text-lg">₽ 15,000</p>
+          </a>
         </div>
-        <div class="form__container">
-            <img src="{% static 'images/Image.png' %}" alt="design">
-            <div class="form">
-                <h3 class="form__title">Join the club and get the benefits</h3>
-                <p class="form__text">Sign up for our newsletter and receive exclusive offers on new ranges, sales, pop up stores and more</p>
-                <button class="button__form"><a class="button__form--text">Sign up</a></button>
-            </div>
-
+        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+          <a href="{% url 'show' %}">
+            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерские очки" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерские очки</h3>
+            <p class="text-gray-600 text-base sm:text-lg">₽ 8,000</p>
+          </a>
         </div>
+        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+          <a href="{% url 'show' %}">
+            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская обувь" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерская обувь</h3>
+            <p class="text-gray-600 text-base sm:text-lg">₽ 20,000</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+          <a href="{% url 'show' %}">
+            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская куртка" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерская куртка</h3>
+            <p class="text-gray-600 text-base sm:text-lg">₽ 25,000</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+          <a href="{% url 'show' %}">
+            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерские часы" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерские часы</h3>
+            <p class="text-gray-600 text-base sm:text-lg">₽ 12,000</p>
+          </a>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+          <a href="{% url 'show' %}">
+            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерский шарф" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерский шарф</h3>
+            <p class="text-gray-600 text-base sm:text-lg">₽ 5,000</p>
+          </a>
+        </div>
+      </div>
+    </section>
 
 {% endblock content %}

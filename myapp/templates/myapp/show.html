@@ -1,0 +1,40 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}О нас - Мой сайт Django{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<section id="product" class="page">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="flex flex-col space-y-4">
+          <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская сумка" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg shadow-md">
+          <div class="flex space-x-2 overflow-x-auto">
+            <img src="#" alt="Миниатюра 1" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition">
+            <img src="#" alt="Миниатюра 2" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition">
+            <img src="#" alt="Миниатюра 3" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition">
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Дизайнерская сумка</h1>
+          <p class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">₽ 15,000</p>
+          <p class="text-base sm:text-lg text-gray-600 mb-6">Элегантная сумка ручной работы из натуральной кожи. Идеально подходит для повседневного использования и особых случаев. Сочетание классического дизайна и современных технологий обеспечивает долговечность и стиль.</p>
+          <div class="mb-6">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Характеристики</h3>
+            <ul class="text-base sm:text-lg text-gray-600 list-disc list-inside">
+              <li>Материал: Натуральная кожа</li>
+              <li>Размеры: 30x20x10 см</li>
+              <li>Цвет: Черный</li>
+              <li>Вес: 0.8 кг</li>
+            </ul>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition">Добавить в корзину</button>
+            <button class="border border-gray-800 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-100 transition">В избранное</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% endblock content %}
