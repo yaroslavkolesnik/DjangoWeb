@@ -1,4 +1,5 @@
 {% load static %} {# Загружаем статические файлы с папки static, чтобы использовать {% static %} #}
+{% load i18n %} {# переменая для переводов  #}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {# Здесь мы определяем блок для заголовка страницы. шаблоны будут его заполнять. #}
     <title>{% block title %}Мой сайт Django{% endblock %}</title>
+    <link rel="icon" href="/favicons/site.webmanifest">
     <link rel="stylesheet" href="{% static 'css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,14 +16,24 @@
 <body>
    <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
-      <a href="#home" class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 sm:mb-0">DesignShop</a>
+      <a href="{% url 'home' %}" class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 sm:mb-0">DesignShop</a>
       <nav class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6">
-        <a href="{% url 'home' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">Главная</a>
-        <a href="{% url 'about' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">О нас</a>
-        <a href="{% url 'contact' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">Контакты</a>
+        <a href="{% url 'home' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">{% trans "Главная" %}</a>
+        <a href="{% url 'about' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">{% trans "О нас" %}</a>
+        <a href="{% url 'contact' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">{% trans "Контакты" %}</a>
       </nav>
       <div class="flex items-center space-x-4 mt-2 sm:mt-0">
-        <a href="#cart" class="text-gray-600 hover:text-gray-900 relative">
+         <form action="{% url 'set_language' %}" method="post" class="relative">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.path }}">
+        <select name="language" onchange="this.form.submit()" class="appearance-none bg-gray-100 text-gray-800 text-sm sm:text-base border border-gray-300 rounded-lg px-3 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-gray-800 cursor-pointer">
+            <option value="ru" {% if request.LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+            <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+            <option value="uk" {% if request.LANGUAGE_CODE == 'uk' %}selected{% endif %}>Українська</option>
+        </select>
+        <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </form>
+        <a href="{% url 'favorites' %}" class="text-gray-600 hover:text-gray-900 relative">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
           <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
         </a>
@@ -38,27 +50,26 @@
    <footer class="bg-gray-800 text-white py-8">
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- О магазине -->
+
         <div>
           <h3 class="text-lg sm:text-xl font-semibold mb-4">DesignShop</h3>
-          <p class="text-sm sm:text-base text-gray-300">Уникальные дизайнерские вещи для вашего стиля. Мы создаем эксклюзивные коллекции с любовью к деталям.</p>
+          <p class="text-sm sm:text-base text-gray-300">{% trans "Уникальные дизайнерские вещи для вашего стиля. Мы создаем эксклюзивные коллекции с любовью к деталям." %}</p>
         </div>
-        <!-- Навигация -->
+
         <div>
-          <h3 class="text-lg sm:text-xl font-semibold mb-4">Навигация</h3>
+          <h3 class="text-lg sm:text-xl font-semibold mb-4">{% trans "Навигация" %}</h3>
           <ul class="text-sm sm:text-base text-gray-300 space-y-2">
-            <li><a href="{% url 'home' %}" class="hover:text-white transition">Главная</a></li>
-            <li><a href="{% url 'about' %}" class="hover:text-white transition">О нас</a></li>
-            <li><a href="{% url 'contact' %}" class="hover:text-white transition">Контакты</a></li>
+            <li><a href="{% url 'home' %}" class="hover:text-white transition">{% trans "Главная" %}</a></li>
+            <li><a href="{% url 'about' %}" class="hover:text-white transition">{% trans "О нас" %}</a></li>
+            <li><a href="{% url 'contact' %}" class="hover:text-white transition">{% trans "Контакты" %}</a></li>
           </ul>
         </div>
-        <!-- Контакты -->
         <div>
-          <h3 class="text-lg sm:text-xl font-semibold mb-4">Контакты</h3>
+          <h3 class="text-lg sm:text-xl font-semibold mb-4">{% trans "Контакты" %}</h3>
           <ul class="text-sm sm:text-base text-gray-300 space-y-2">
-            <li>Email: <a href="mailto:info@designshop.ru" class="hover:text-white transition">info@designshop.ru</a></li>
-            <li>Телефон: <a href="tel:+79991234567" class="hover:text-white transition">+7 (999) 123-45-67</a></li>
-            <li>Адрес: г. Москва, ул. Дизайна, д. 10</li>
+            <li>Email: <a href="#" class="hover:text-white transition">info@designshop.com</a></li>
+            <li>{% trans "Телефон:" %} <a href="#" class="hover:text-white transition">+7 (999) 123-45-67</a></li>
+            <li>{% trans "Адрес: г. Харьков" %}</li>
           </ul>
         </div>
       </div>
@@ -74,7 +85,7 @@
         </a>
       </div>
       <div class="mt-8 text-center">
-        <p class="text-sm sm:text-base text-gray-300">&copy; 2025 DesignShop. Все права защищены.</p>
+        <p class="text-sm sm:text-base text-gray-300">{% trans "&copy; 2025 DesignShop. Все права защищены." %}</p>
       </div>
     </div>
   </footer>

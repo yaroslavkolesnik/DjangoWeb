@@ -1,39 +1,41 @@
 {% extends 'myapp/base.html' %}
 
-{% block title %}О нас - Мой сайт Django{% endblock %}
+{% load i18n %} {# переменая для переводов  #}
+
+{% block title %} {% trans "О нас - Мой сайт Django" %} {% endblock %}
 
 {% block content %}
 
 {% load static %}
     <section id="about" class="page">
       <div class="text-center mb-8">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">О нас</h1>
-        <p class="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">DesignShop — это пространство, где стиль встречается с индивидуальностью. Мы создаем уникальные дизайнерские вещи для тех, кто ценит качество и оригинальность.</p>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">{% trans "О нас" %}</h1>
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">{% trans "DesignShop — это пространство, где стиль встречается с индивидуальностью. Мы создаем уникальные дизайнерские вещи для тех, кто ценит качество и оригинальность." %}</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="flex flex-col justify-center">
-          <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">Наша миссия</h2>
-          <p class="text-base sm:text-lg text-gray-600 mb-4">Мы стремимся сделать дизайнерские вещи доступными каждому, поддерживая талантливых мастеров и предлагая эксклюзивные коллекции, созданные с душой.</p>
-          <p class="text-base sm:text-lg text-gray-600">Наша команда сотрудничает с дизайнерами со всего мира, чтобы предложить вам изделия, которые подчеркнут ваш уникальный стиль и добавят вдохновения в повседневную жизнь.</p>
+          <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4"> {% trans "Наша миссия" %}</h2>
+          <p class="text-base sm:text-lg text-gray-600 mb-4">{% trans "Мы стремимся сделать дизайнерские вещи доступными каждому, поддерживая талантливых мастеров и предлагая эксклюзивные коллекции, созданные с душой." %}</p>
+          <p class="text-base sm:text-lg text-gray-600">{% trans "Наша команда сотрудничает с дизайнерами со всего мира, чтобы предложить вам изделия, которые подчеркнут ваш уникальный стиль и добавят вдохновения в повседневную жизнь." %}</p>
         </div>
         <div class="flex justify-center">
           <img src="{% static 'images/Photo.png' %}"  alt="Дизайнерская работа" class="w-full h-64 sm:h-80 md:h-96 object-cover rounded-lg shadow-md">
         </div>
       </div>
       <div class="text-center">
-        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">Почему выбирают нас?</h2>
+        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">{% trans "Почему выбирают нас?" %}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Уникальный дизайн</h3>
-            <p class="text-base sm:text-lg text-gray-600">Каждая вещь в нашем магазине — это произведение искусства, созданное с вниманием к деталям.</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">{% trans "Уникальный дизайн" %}</h3>
+            <p class="text-base sm:text-lg text-gray-600">{% trans "Каждая вещь в нашем магазине — это произведение искусства, созданное с вниманием к деталям." %}</p>
           </div>
           <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Качество</h3>
-            <p class="text-base sm:text-lg text-gray-600">Мы используем только лучшие материалы, чтобы обеспечить долговечность и комфорт.</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">{% trans "Качество" %}</h3>
+            <p class="text-base sm:text-lg text-gray-600">{% trans "Мы используем только лучшие материалы, чтобы обеспечить долговечность и комфорт." %}</p>
           </div>
           <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Эксклюзивность</h3>
-            <p class="text-base sm:text-lg text-gray-600">Наши коллекции ограничены, что делает каждую покупку особенной.</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">{% trans "Эксклюзивность" %}</h3>
+            <p class="text-base sm:text-lg text-gray-600">{% trans "Наши коллекции ограничены, что делает каждую покупку особенной." %}</p>
           </div>
         </div>
       </div>

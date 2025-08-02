@@ -1,56 +1,58 @@
 {% extends 'myapp/base.html' %} {# Указываем, от какого шаблона наследуем #}
 
-{% block title %}Главная страница - Мой сайт Django{% endblock %} {# Переопределяем блок title #}
+{% load i18n %} {# переменая для переводов  #}
+
+{% block title %} {% trans "Главная страница - Мой сайт Django" %}{% endblock %} {# Переопределяем блок title #}
 
 {% block content %} {# Заполняем основной блок контента #}
 
 {% load static %}
 <section id="home" class="page">
       <div class="text-center mb-8">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">Добро пожаловать в DesignShop</h1>
-        <p class="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">Откройте для себя уникальные дизайнерские вещи, созданные для вашего стиля и индивидуальности.</p>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">{% trans "Добро пожаловать в DesignShop" %}</h1>
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">{% trans "Откройте для себя уникальные дизайнерские вещи, созданные для вашего стиля и индивидуальности." %}</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
           <a href="{% url 'show' %}">
             <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская сумка" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерская сумка</h3>
-            <p class="text-gray-600 text-base sm:text-lg">₽ 15,000</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерская сумка" %}</h3>
+            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн 15,000" %}</p>
           </a>
         </div>
         <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
           <a href="{% url 'show' %}">
             <img src="{% static 'images/Photo.png' %}" alt="Дизайнерские очки" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерские очки</h3>
-            <p class="text-gray-600 text-base sm:text-lg">₽ 8,000</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерские очки" %}</h3>
+            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  8,000" %}</p>
           </a>
         </div>
         <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
           <a href="{% url 'show' %}">
             <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская обувь" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерская обувь</h3>
-            <p class="text-gray-600 text-base sm:text-lg">₽ 20,000</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерская обувь" %}</h3>
+            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  20,000" %}</p>
           </a>
         </div>
         <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
           <a href="{% url 'show' %}">
             <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская куртка" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерская куртка</h3>
-            <p class="text-gray-600 text-base sm:text-lg">₽ 25,000</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерская куртка" %}</h3>
+            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  25,000" %}</p>
           </a>
         </div>
         <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
           <a href="{% url 'show' %}">
             <img src="{% static 'images/Photo.png' %}" alt="Дизайнерские часы" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерские часы</h3>
-            <p class="text-gray-600 text-base sm:text-lg">₽ 12,000</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерские часы" %}</h3>
+            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  12,000" %}</p>
           </a>
         </div>
         <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
           <a href="{% url 'show' %}">
             <img src="{% static 'images/Photo.png' %}" alt="Дизайнерский шарф" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Дизайнерский шарф</h3>
-            <p class="text-gray-600 text-base sm:text-lg">₽ 5,000</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерский шарф" %}</h3>
+            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  5,000" %}</p>
           </a>
         </div>
       </div>

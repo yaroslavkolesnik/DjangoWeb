@@ -1,0 +1,330 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-01 15:01+0300\n"
+"PO-Revision-Date: 2025-08-01 11:39+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: en <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\mysite\settings.py:118
+msgid "Russian"
+msgstr "Russian"
+
+#: .\mysite\settings.py:119
+msgid "English"
+msgstr "English"
+
+#: .\mysite\settings.py:120
+msgid "Ukrainian"
+msgstr "Ukrainian"
+
+#: .\myapp\templates\myapp\about.html:5
+msgid "О нас - Мой сайт Django"
+msgstr "About Us - My Django Site"
+
+#: .\myapp\templates\myapp\about.html:12 .\myapp\templates\myapp\base.html:21
+#: .\myapp\templates\myapp\base.html:62
+msgid "О нас"
+msgstr "About Us"
+
+#: .\myapp\templates\myapp\about.html:13
+msgid ""
+"DesignShop — это пространство, где стиль встречается с индивидуальностью. Мы "
+"создаем уникальные дизайнерские вещи для тех, кто ценит качество и "
+"оригинальность."
+msgstr ""
+"DesignShop is a space where style meets individuality. We create unique "
+"designer items for those who value quality and originality."
+
+#: .\myapp\templates\myapp\about.html:17
+msgid "Наша миссия"
+msgstr "Our Mission"
+
+#: .\myapp\templates\myapp\about.html:18
+msgid ""
+"Мы стремимся сделать дизайнерские вещи доступными каждому, поддерживая "
+"талантливых мастеров и предлагая эксклюзивные коллекции, созданные с душой."
+msgstr ""
+"We strive to make designer items accessible to everyone, supporting talented "
+"craftsmen and offering exclusive collections created with heart."
+
+#: .\myapp\templates\myapp\about.html:19
+msgid ""
+"Наша команда сотрудничает с дизайнерами со всего мира, чтобы предложить вам "
+"изделия, которые подчеркнут ваш уникальный стиль и добавят вдохновения в "
+"повседневную жизнь."
+msgstr ""
+"Our team collaborates with designers from around the world to offer you "
+"items that will highlight your unique style and add inspiration to everyday "
+"life."
+
+#: .\myapp\templates\myapp\about.html:26
+msgid "Почему выбирают нас?"
+msgstr "Why Choose Us?"
+
+#: .\myapp\templates\myapp\about.html:29
+msgid "Уникальный дизайн"
+msgstr "Unique Design"
+
+#: .\myapp\templates\myapp\about.html:30
+msgid ""
+"Каждая вещь в нашем магазине — это произведение искусства, созданное с "
+"вниманием к деталям."
+msgstr ""
+"Every item in our store is a work of art, created with attention to detail."
+
+#: .\myapp\templates\myapp\about.html:33
+msgid "Качество"
+msgstr "Quality"
+
+#: .\myapp\templates\myapp\about.html:34
+msgid ""
+"Мы используем только лучшие материалы, чтобы обеспечить долговечность и "
+"комфорт."
+msgstr "We use only the best materials to ensure durability and comfort."
+
+#: .\myapp\templates\myapp\about.html:37
+msgid "Эксклюзивность"
+msgstr "Exclusivity"
+
+#: .\myapp\templates\myapp\about.html:38
+msgid "Наши коллекции ограничены, что делает каждую покупку особенной."
+msgstr "Our collections are limited, which makes every purchase special."
+
+#: .\myapp\templates\myapp\base.html:20 .\myapp\templates\myapp\base.html:61
+msgid "Главная"
+msgstr "Home"
+
+#: .\myapp\templates\myapp\base.html:22 .\myapp\templates\myapp\base.html:63
+#: .\myapp\templates\myapp\base.html:67
+msgid "Контакты"
+msgstr "Contact Us"
+
+#: .\myapp\templates\myapp\base.html:55
+msgid ""
+"Уникальные дизайнерские вещи для вашего стиля. Мы создаем эксклюзивные "
+"коллекции с любовью к деталям."
+msgstr ""
+"Unique designer items for your style. We create exclusive collections with "
+"attention to detail."
+
+#: .\myapp\templates\myapp\base.html:59
+msgid "Навигация"
+msgstr "Navigation"
+
+#: .\myapp\templates\myapp\base.html:70
+#: .\myapp\templates\myapp\contact.html:25
+msgid "Телефон:"
+msgstr "Phone:"
+
+#: .\myapp\templates\myapp\base.html:71
+#: .\myapp\templates\myapp\contact.html:29
+msgid "Адрес: г. Харьков"
+msgstr "Address: Kharkiv"
+
+#: .\myapp\templates\myapp\base.html:87
+msgid "&copy; 2025 DesignShop. Все права защищены."
+msgstr "&copy; 2025 DesignShop. All Rights Reserved."
+
+#: .\myapp\templates\myapp\contact.html:5
+msgid "Контакты - Мой сайт Django"
+msgstr "Contact Us - My Django Site"
+
+#: .\myapp\templates\myapp\contact.html:12
+msgid "Свяжитесь с нами"
+msgstr "Contact Us"
+
+#: .\myapp\templates\myapp\contact.html:13
+msgid ""
+"Мы всегда рады ответить на ваши вопросы и помочь с выбором дизайнерских "
+"вещей!"
+msgstr ""
+"We are always happy to answer your questions and help you choose designer "
+"items!"
+
+#: .\myapp\templates\myapp\contact.html:17
+msgid "Наши контакты"
+msgstr "Our Contacts"
+
+#: .\myapp\templates\myapp\contact.html:34
+msgid "Карта местоположения (заглушка)"
+msgstr "Location map (placeholder)"
+
+#: .\myapp\templates\myapp\contact.html:38
+msgid "Напишите нам"
+msgstr "Write to Us"
+
+#: .\myapp\templates\myapp\contact.html:41
+msgid "Имя"
+msgstr "Name"
+
+#: .\myapp\templates\myapp\contact.html:49
+msgid "Сообщение"
+msgstr "Message"
+
+#: .\myapp\templates\myapp\contact.html:52
+msgid "Отправить"
+msgstr "Send"
+
+#: .\myapp\templates\myapp\favorites.html:5
+#, fuzzy
+#| msgid "Контакты - Мой сайт Django"
+msgid "Корзина - Мой сайт Django"
+msgstr "Contact Us - My Django Site"
+
+#: .\myapp\templates\myapp\favorites.html:13
+#, fuzzy
+#| msgid "Добавить в корзину"
+msgid "Ваша корзина"
+msgstr "Your Cart"
+
+#: .\myapp\templates\myapp\favorites.html:14
+msgid "Просмотрите товары в вашей корзине и оформите заказ."
+msgstr "Review the items in your cart and place your order."
+
+#: .\myapp\templates\myapp\favorites.html:22
+#: .\myapp\templates\myapp\index.html:19 .\myapp\templates\myapp\show.html:22
+msgid "Дизайнерская сумка"
+msgstr "Designer Bag"
+
+#: .\myapp\templates\myapp\favorites.html:23
+#: .\myapp\templates\myapp\favorites.html:32
+#: .\myapp\templates\myapp\index.html:20
+msgid "грн 15,000"
+msgstr "UAH 15,000"
+
+#: .\myapp\templates\myapp\favorites.html:43
+#: .\myapp\templates\myapp\index.html:26
+msgid "Дизайнерские очки"
+msgstr "Designer Glasses"
+
+#: .\myapp\templates\myapp\favorites.html:44
+#, fuzzy
+#| msgid "грн  8,000"
+msgid "грн 8,000"
+msgstr "UAH 8,000"
+
+#: .\myapp\templates\myapp\favorites.html:61
+msgid "Итого"
+msgstr "Total"
+
+#: .\myapp\templates\myapp\favorites.html:62
+#, fuzzy
+#| msgid "грн  20,000"
+msgid "грн 23,000"
+msgstr "UAH 20,000"
+
+#: .\myapp\templates\myapp\favorites.html:65
+msgid "Оформить заказ"
+msgstr "Place an order"
+
+#: .\myapp\templates\myapp\index.html:5
+msgid "Главная страница - Мой сайт Django"
+msgstr "Home Page - My Django Site"
+
+#: .\myapp\templates\myapp\index.html:12
+msgid "Добро пожаловать в DesignShop"
+msgstr "Welcome to DesignShop"
+
+#: .\myapp\templates\myapp\index.html:13
+msgid ""
+"Откройте для себя уникальные дизайнерские вещи, созданные для вашего стиля и "
+"индивидуальности."
+msgstr ""
+"Discover unique designer items created for your style and individuality."
+
+#: .\myapp\templates\myapp\index.html:27
+msgid "грн  8,000"
+msgstr "UAH 8,000"
+
+#: .\myapp\templates\myapp\index.html:33
+msgid "Дизайнерская обувь"
+msgstr "Designer Shoes"
+
+#: .\myapp\templates\myapp\index.html:34
+msgid "грн  20,000"
+msgstr "UAH 20,000"
+
+#: .\myapp\templates\myapp\index.html:40
+msgid "Дизайнерская куртка"
+msgstr "Designer Jacket"
+
+#: .\myapp\templates\myapp\index.html:41
+msgid "грн  25,000"
+msgstr "UAH 25,000"
+
+#: .\myapp\templates\myapp\index.html:47
+msgid "Дизайнерские часы"
+msgstr "Designer Watch"
+
+#: .\myapp\templates\myapp\index.html:48
+msgid "грн  12,000"
+msgstr "UAH 12,000"
+
+#: .\myapp\templates\myapp\index.html:54
+msgid "Дизайнерский шарф"
+msgstr "Designer Scarf"
+
+#: .\myapp\templates\myapp\index.html:55
+msgid "грн  5,000"
+msgstr "UAH 5,000"
+
+#: .\myapp\templates\myapp\show.html:5
+#, fuzzy
+#| msgid "О нас - Мой сайт Django"
+msgid "Товар - Мой сайт Django"
+msgstr "About Us - My Django Site"
+
+#: .\myapp\templates\myapp\show.html:23
+msgid "грн  15,000"
+msgstr "UAH 15,000"
+
+#: .\myapp\templates\myapp\show.html:24
+msgid ""
+"Элегантная сумка ручной работы из натуральной кожи. Идеально подходит для "
+"повседневного использования и особых случаев. Сочетание классического "
+"дизайна и современных технологий обеспечивает долговечность и стиль."
+msgstr ""
+"An elegant handcrafted bag made of genuine leather. Perfect for everyday use "
+"and special occasions. The combination of classic design and modern "
+"technology ensures durability and style."
+
+#: .\myapp\templates\myapp\show.html:26
+msgid "Характеристики"
+msgstr "Specifications"
+
+#: .\myapp\templates\myapp\show.html:28
+msgid "Материал: Натуральная кожа"
+msgstr "Material: Genuine Leather"
+
+#: .\myapp\templates\myapp\show.html:29
+msgid "Размеры: 30x20x10 см"
+msgstr "Dimensions: 30x20x10 cm"
+
+#: .\myapp\templates\myapp\show.html:30
+msgid "Цвет: Черный"
+msgstr "Color: Black"
+
+#: .\myapp\templates\myapp\show.html:31
+msgid "Вес: 0.8 кг"
+msgstr "Weight: 0.8 kg"
+
+#: .\myapp\templates\myapp\show.html:35
+msgid "Добавить в корзину"
+msgstr "Add to Cart"
+
+#: .\myapp\templates\myapp\show.html:36
+msgid "В избранное"
+msgstr "Add to Favorites"
