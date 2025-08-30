@@ -1,5 +1,6 @@
 console.log('JavaScript подключен');
 
+// кнопка открытия и закрытия меню на телефонах
 const menuToggle = document.getElementById('menu-toggle');
 const menuClose = document.getElementById('menu-close');
 const mobileMenu = document.getElementById('mobile-menu');
@@ -12,12 +13,13 @@ menuClose.addEventListener('click', () => {
   mobileMenu.classList.add('-translate-x-full');
 });
 
+// кнопка поднятия вверх
 document.addEventListener("DOMContentLoaded", function() {
 
     const backToTopButton = document.createElement("a");
     backToTopButton.href = "#";
     backToTopButton.id = "ui-to-top-custom";
-    backToTopButton.className = "ui-to-top fa fa-angle-up"; // Ваши классы, включая Font Awesome
+    backToTopButton.className = "ui-to-top fa fa-angle-up";
     backToTopButton.setAttribute("aria-label", "Вернуться наверх");
 
     document.body.appendChild(backToTopButton);

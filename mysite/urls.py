@@ -26,9 +26,15 @@ urlpatterns = i18n_patterns(
     path("contact/", views.contact, name='contact'),
     path("show/", views.show, name='show'),
     path("favorites/", views.favorites, name='favorites'),
+    path("order/", views.order, name='order'),
     path('admin/', admin.site.urls),
 )
 
 urlpatterns += [
     path('i18n/', include('django.conf.urls.i18n')),
 ]
+
+handler400 = 'myapp.views.handler400'
+handler404 = 'myapp.views.handler404'
+handler405 = 'myapp.views.handler405'
+handler500 = 'myapp.views.handler500'

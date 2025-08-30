@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-01 15:01+0300\n"
+"POT-Creation-Date: 2025-08-09 15:25+0300\n"
 "PO-Revision-Date: 2025-08-01 11:39+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -34,8 +34,9 @@ msgstr "Ukrainian"
 msgid "О нас - Мой сайт Django"
 msgstr "About Us - My Django Site"
 
-#: .\myapp\templates\myapp\about.html:12 .\myapp\templates\myapp\base.html:21
-#: .\myapp\templates\myapp\base.html:62
+#: .\myapp\templates\myapp\about.html:12 .\myapp\templates\myapp\base.html:32
+#: .\myapp\templates\myapp\base.html:71 .\myapp\templates\myapp\base.html:134
+#: .\myapp\views.py:12
 msgid "О нас"
 msgstr "About Us"
 
@@ -103,16 +104,19 @@ msgstr "Exclusivity"
 msgid "Наши коллекции ограничены, что делает каждую покупку особенной."
 msgstr "Our collections are limited, which makes every purchase special."
 
-#: .\myapp\templates\myapp\base.html:20 .\myapp\templates\myapp\base.html:61
+#: .\myapp\templates\myapp\base.html:31 .\myapp\templates\myapp\base.html:70
+#: .\myapp\templates\myapp\base.html:133 .\myapp\views.py:11
+#: .\myapp\views.py:18 .\myapp\views.py:26
 msgid "Главная"
 msgstr "Home"
 
-#: .\myapp\templates\myapp\base.html:22 .\myapp\templates\myapp\base.html:63
-#: .\myapp\templates\myapp\base.html:67
+#: .\myapp\templates\myapp\base.html:33 .\myapp\templates\myapp\base.html:72
+#: .\myapp\templates\myapp\base.html:135 .\myapp\templates\myapp\base.html:139
+#: .\myapp\views.py:19
 msgid "Контакты"
 msgstr "Contact Us"
 
-#: .\myapp\templates\myapp\base.html:55
+#: .\myapp\templates\myapp\base.html:127
 msgid ""
 "Уникальные дизайнерские вещи для вашего стиля. Мы создаем эксклюзивные "
 "коллекции с любовью к деталям."
@@ -120,21 +124,21 @@ msgstr ""
 "Unique designer items for your style. We create exclusive collections with "
 "attention to detail."
 
-#: .\myapp\templates\myapp\base.html:59
+#: .\myapp\templates\myapp\base.html:131
 msgid "Навигация"
 msgstr "Navigation"
 
-#: .\myapp\templates\myapp\base.html:70
+#: .\myapp\templates\myapp\base.html:142
 #: .\myapp\templates\myapp\contact.html:25
 msgid "Телефон:"
 msgstr "Phone:"
 
-#: .\myapp\templates\myapp\base.html:71
+#: .\myapp\templates\myapp\base.html:143
 #: .\myapp\templates\myapp\contact.html:29
 msgid "Адрес: г. Харьков"
 msgstr "Address: Kharkiv"
 
-#: .\myapp\templates\myapp\base.html:87
+#: .\myapp\templates\myapp\base.html:159
 msgid "&copy; 2025 DesignShop. Все права защищены."
 msgstr "&copy; 2025 DesignShop. All Rights Reserved."
 
@@ -178,108 +182,157 @@ msgstr "Message"
 msgid "Отправить"
 msgstr "Send"
 
-#: .\myapp\templates\myapp\favorites.html:5
+#: .\myapp\templates\myapp\favorites.html:7
 #, fuzzy
 #| msgid "Контакты - Мой сайт Django"
 msgid "Корзина - Мой сайт Django"
 msgstr "Contact Us - My Django Site"
 
-#: .\myapp\templates\myapp\favorites.html:13
+#: .\myapp\templates\myapp\favorites.html:15
 #, fuzzy
 #| msgid "Добавить в корзину"
 msgid "Ваша корзина"
 msgstr "Your Cart"
 
-#: .\myapp\templates\myapp\favorites.html:14
+#: .\myapp\templates\myapp\favorites.html:16
 msgid "Просмотрите товары в вашей корзине и оформите заказ."
 msgstr "Review the items in your cart and place your order."
 
-#: .\myapp\templates\myapp\favorites.html:22
-#: .\myapp\templates\myapp\index.html:19 .\myapp\templates\myapp\show.html:22
+#: .\myapp\templates\myapp\favorites.html:24
+#: .\myapp\templates\myapp\index.html:21 .\myapp\templates\myapp\show.html:22
 msgid "Дизайнерская сумка"
 msgstr "Designer Bag"
 
-#: .\myapp\templates\myapp\favorites.html:23
-#: .\myapp\templates\myapp\favorites.html:32
-#: .\myapp\templates\myapp\index.html:20
+#: .\myapp\templates\myapp\favorites.html:25
+#: .\myapp\templates\myapp\favorites.html:34
+#: .\myapp\templates\myapp\index.html:22
 msgid "грн 15,000"
 msgstr "UAH 15,000"
 
-#: .\myapp\templates\myapp\favorites.html:43
-#: .\myapp\templates\myapp\index.html:26
+#: .\myapp\templates\myapp\favorites.html:45
+#: .\myapp\templates\myapp\index.html:28
 msgid "Дизайнерские очки"
 msgstr "Designer Glasses"
 
-#: .\myapp\templates\myapp\favorites.html:44
+#: .\myapp\templates\myapp\favorites.html:46
 #, fuzzy
 #| msgid "грн  8,000"
 msgid "грн 8,000"
 msgstr "UAH 8,000"
 
-#: .\myapp\templates\myapp\favorites.html:61
+#: .\myapp\templates\myapp\favorites.html:63
+#: .\myapp\templates\myapp\order.html:35
 msgid "Итого"
 msgstr "Total"
 
-#: .\myapp\templates\myapp\favorites.html:62
+#: .\myapp\templates\myapp\favorites.html:64
 #, fuzzy
 #| msgid "грн  20,000"
 msgid "грн 23,000"
 msgstr "UAH 20,000"
 
-#: .\myapp\templates\myapp\favorites.html:65
+#: .\myapp\templates\myapp\favorites.html:67
 msgid "Оформить заказ"
 msgstr "Place an order"
 
-#: .\myapp\templates\myapp\index.html:5
+#: .\myapp\templates\myapp\index.html:7 .\myapp\templates\myapp\order.html:7
 msgid "Главная страница - Мой сайт Django"
 msgstr "Home Page - My Django Site"
 
-#: .\myapp\templates\myapp\index.html:12
+#: .\myapp\templates\myapp\index.html:14
 msgid "Добро пожаловать в DesignShop"
 msgstr "Welcome to DesignShop"
 
-#: .\myapp\templates\myapp\index.html:13
+#: .\myapp\templates\myapp\index.html:15
 msgid ""
 "Откройте для себя уникальные дизайнерские вещи, созданные для вашего стиля и "
 "индивидуальности."
 msgstr ""
 "Discover unique designer items created for your style and individuality."
 
-#: .\myapp\templates\myapp\index.html:27
+#: .\myapp\templates\myapp\index.html:29
 msgid "грн  8,000"
 msgstr "UAH 8,000"
 
-#: .\myapp\templates\myapp\index.html:33
+#: .\myapp\templates\myapp\index.html:35
 msgid "Дизайнерская обувь"
 msgstr "Designer Shoes"
 
-#: .\myapp\templates\myapp\index.html:34
+#: .\myapp\templates\myapp\index.html:36
 msgid "грн  20,000"
 msgstr "UAH 20,000"
 
-#: .\myapp\templates\myapp\index.html:40
+#: .\myapp\templates\myapp\index.html:42
 msgid "Дизайнерская куртка"
 msgstr "Designer Jacket"
 
-#: .\myapp\templates\myapp\index.html:41
+#: .\myapp\templates\myapp\index.html:43
 msgid "грн  25,000"
 msgstr "UAH 25,000"
 
-#: .\myapp\templates\myapp\index.html:47
+#: .\myapp\templates\myapp\index.html:49
 msgid "Дизайнерские часы"
 msgstr "Designer Watch"
 
-#: .\myapp\templates\myapp\index.html:48
+#: .\myapp\templates\myapp\index.html:50
 msgid "грн  12,000"
 msgstr "UAH 12,000"
 
-#: .\myapp\templates\myapp\index.html:54
+#: .\myapp\templates\myapp\index.html:56
 msgid "Дизайнерский шарф"
 msgstr "Designer Scarf"
 
-#: .\myapp\templates\myapp\index.html:55
+#: .\myapp\templates\myapp\index.html:57
 msgid "грн  5,000"
 msgstr "UAH 5,000"
+
+#: .\myapp\templates\myapp\order.html:14
+#, fuzzy
+#| msgid "Оформить заказ"
+msgid "Оформление заказа"
+msgstr "Place an order"
+
+#: .\myapp\templates\myapp\order.html:18
+#, fuzzy
+#| msgid "Наши контакты"
+msgid "Ваши товары"
+msgstr "Our Contacts"
+
+#: .\myapp\templates\myapp\order.html:32
+#, fuzzy
+#| msgid "Добавить в корзину"
+msgid "Ваша корзина пуста"
+msgstr "Your Cart"
+
+#: .\myapp\templates\myapp\order.html:43
+msgid "Информация для оплаты"
+msgstr "Info for order"
+
+#: .\myapp\templates\myapp\order.html:47
+msgid "Имя и фамилия"
+msgstr ""
+
+#: .\myapp\templates\myapp\order.html:53
+#, fuzzy
+#| msgid "Адрес: г. Харьков"
+msgid "Адрес доставки"
+msgstr "Address: Kharkiv"
+
+#: .\myapp\templates\myapp\order.html:59
+msgid "Способ оплаты"
+msgstr ""
+
+#: .\myapp\templates\myapp\order.html:63
+msgid "Кредитная карта"
+msgstr ""
+
+#: .\myapp\templates\myapp\order.html:67
+msgid "Банковский перевод"
+msgstr ""
+
+#: .\myapp\templates\myapp\order.html:74
+msgid "Оплатить"
+msgstr ""
 
 #: .\myapp\templates\myapp\show.html:5
 #, fuzzy
@@ -328,3 +381,7 @@ msgstr "Add to Cart"
 #: .\myapp\templates\myapp\show.html:36
 msgid "В избранное"
 msgstr "Add to Favorites"
+
+#: .\myapp\views.py:27
+msgid "Товар"
+msgstr ""

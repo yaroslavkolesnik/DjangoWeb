@@ -1,0 +1,80 @@
+{% extends 'myapp/base.html' %} {# Указываем, от какого шаблона наследуем #}
+
+{% load i18n %} {# переменая для переводов  #}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %} {% trans "Главная страница - Мой сайт Django" %}{% endblock %} {# Переопределяем блок title #}
+
+{% block content %} {# Заполняем основной блок контента #}
+
+{% load static %}
+
+<div class="max-w-2xl mx-auto">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">{% trans "Оформление заказа" %}</h1>
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Helloo</h1>
+
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">{% trans "Ваши товары" %}</h2>
+                <div class="space-y-4">
+                    {% for item in cart_items %}
+                        <div class="flex items-center justify-between border-b pb-4 last:border-b-0">
+                            <div class="flex items-center space-x-4">
+                                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-16 h-16 object-cover rounded">
+                                <div>
+                                    <h3 class="text-base sm:text-lg font-medium text-gray-800">{{ item.name }}</h3>
+                                    <p class="text-gray-600 text-sm sm:text-base">{{ item.quantity }} </p>
+                                </div>
+                            </div>
+                            <p class="text-base sm:text-lg font-semibold text-gray-800">грн</p>
+                        </div>
+                    {% empty %}
+                        <p class="text-gray-600">{% trans "Ваша корзина пуста" %}</p>
+                    {% endfor %}
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <p class="text-lg sm:text-xl font-bold text-gray-800">{% trans "Итого" %}: грн</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <form action="#" method="post" class="bg-white rounded-lg shadow-md p-6">
+                {% csrf_token %}
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">{% trans "Информация для оплаты" %}</h2>
+
+
+                <div class="mb-4">
+                    <label for="full_name" class="block text-sm sm:text-base text-gray-700 font-medium mb-1">{% trans "Имя и фамилия" %}</label>
+                    <input type="text" id="full_name" name="full_name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+
+                <div class="mb-4">
+                    <label for="address" class="block text-sm sm:text-base text-gray-700 font-medium mb-1">{% trans "Адрес доставки" %}</label>
+                    <textarea id="address" name="address" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+                </div>
+
+
+                <div class="mb-4">
+                    <label class="block text-sm sm:text-base text-gray-700 font-medium mb-1">{% trans "Способ оплаты" %}</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="radio" name="payment_method" value="credit_card" required class="mr-2 text-blue-500 focus:ring-blue-500">
+                            <span class="text-gray-600">{% trans "Кредитная карта" %}</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="payment_method" value="bank_transfer" class="mr-2 text-blue-500 focus:ring-blue-500">
+                            <span class="text-gray-600">{% trans "Банковский перевод" %}</span>
+                        </label>
+                    </div>
+                </div>
+
+
+                <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    {% trans "Оплатить" %}
+                </button>
+            </form>
+        </div>
+
+{% endblock content %}

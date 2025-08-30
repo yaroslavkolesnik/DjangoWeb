@@ -1,0 +1,29 @@
+{% extends 'myapp/base.html' %} {# Указываем, от какого шаблона наследуем #}
+
+{% load i18n %} {# Подключение тегов для переводов #}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %} {% trans "Внутренняя ошибка сервера" %}{% endblock %} {# Переопределяем блок title #}
+
+{% block content %} {# Заполняем основной блок контента #}
+{% load static %}
+
+<div class="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center px-4">
+    <div class="text-center max-w-md">
+        <!-- Иконка ошибки (placeholder) -->
+        <svg class="w-24 h-24 mx-auto text-gray-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M12 12h4.01m-4.01 0H7M4 4v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H6a2 2 0 00-2 2z"></path>
+        </svg>
+
+        <!-- Сообщение об ошибке -->
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">{% trans "500" %}</h1>
+        <p class="text-xl sm:text-2xl text-gray-600 mb-6">{% trans "Внутренняя ошибка сервера" %}</p>
+        <p class="text-gray-500 mb-8">{% trans "Произошла ошибка на стороне сервера. Мы уже работаем над её устранением. Попробуйте позже или вернитесь на главную страницу." %}</p>
+
+        <!-- Кнопка возврата -->
+        <a href="{% url 'home' %}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-lg">{% trans "Вернуться на главную" %}</a>
+    </div>
+</div>
+
+{% endblock content %}
