@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import django_heroku
+import dj_database_url
 
 from django.utils.translation import gettext_lazy as _
 
@@ -22,20 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8w!st8qi2@wg$o6%c5wixxjf8w_ztu87o5b0mz7mxyb)dsiu8u'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-8w!st8qi2@wg$o6%c5wixxjf8w_ztu87o5b0mz7mxyb)dsiu8u')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-#рабочий режим
-#DEBUG = True
-
-#ALLOWED_HOSTS = []
-
-#Режим готового проекта
-
-DEBUG = False
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']  # Heroku будет управлять этим
 
 # Application definition
 
@@ -51,13 +46,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Добавлено для статических файлов
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware', # этот запрос нужен для опредиления языка по http запросу
+    'django.middleware.locale.LocaleMiddleware',  # этот запрос нужен для определения языка по http запросу
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -89,6 +85,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Настройка PostgreSQL для продакшена
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.parse(os.environ.get('DATABASE_URL'))
 
 
 # Password validation
@@ -134,14 +134,21 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Настройка для WhiteNoise (обслуживание статических файлов)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Активация django-heroku (должно быть в конце файла)
+django_heroku.settings(locals())
