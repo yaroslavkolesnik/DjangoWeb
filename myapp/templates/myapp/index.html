@@ -1,63 +1,219 @@
-{% extends 'myapp/base.html' %} {# Указываем, от какого шаблона наследуем #}
-
-{% load i18n %} {# переменая для переводов  #}
-
-{% block breadcrumbs %}{% endblock %}
-
-{% block title %} {% trans "Главная страница - Мой сайт Django" %}{% endblock %} {# Переопределяем блок title #}
-
-{% block content %} {# Заполняем основной блок контента #}
-
+{% extends 'myapp/base.html' %}
+{% load i18n %}
 {% load static %}
-<section id="home" class="page">
-      <div class="text-center mb-8">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">{% trans "Добро пожаловать в DesignShop" %}</h1>
-        <p class="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">{% trans "Откройте для себя уникальные дизайнерские вещи, созданные для вашего стиля и индивидуальности." %}</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <a href="{% url 'show' %}">
-            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская сумка" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерская сумка" %}</h3>
-            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн 15,000" %}</p>
-          </a>
+{% load myapp_extras %}
+{% block title %} {% trans "Главная страница - Мой сайт Django" %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+{% block content %}
+
+<section id="home" class="page min-h-screen">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">{% trans "Добро пожаловать в Shop" %}</h1>
+    </div>
+
+    {% if banners %}
+        <div class="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-lg shadow-lg mb-10 group">
+            <div id="slider-track" class="flex transition-transform duration-500 ease-out h-full">
+                {% for banner in banners %}
+                <div class="w-full h-full flex-shrink-0 relative">
+                    {% if banner.image %}
+                        <img src="{{ banner.image.url }}" alt="{{ banner.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="w-full h-full bg-gray-300 flex items-center justify-center">No Image</div>
+                    {% endif %}
+
+                    <div class="absolute inset-0 bg-opacity-40 flex flex-col justify-center items-center text-center p-4">
+                        <h2 class="text-3xl md:text-5xl font-bold text-white mb-2 drop-shadow-md">{{ banner.title }}</h2>
+                        {% if banner.text %}
+                            <p class="text-lg md:text-xl text-gray-200 max-w-2xl drop-shadow-md">{{ banner.text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button id="prev-slide" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-2 rounded-full backdrop-blur-sm transition z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </button>
+            <button id="next-slide" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-2 rounded-full backdrop-blur-sm transition z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+            </button>
+
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-10">
+                {% for banner in banners %}
+                    <button class="slider-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all" data-index="{{ forloop.counter0 }}"></button>
+                {% endfor %}
+            </div>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <a href="{% url 'show' %}">
-            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерские очки" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерские очки" %}</h3>
-            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  8,000" %}</p>
-          </a>
+    {% endif %}
+
+    <form action="{% url 'home' %}" method="get" id="filterForm">
+        {% if query %}
+            <input type="hidden" name="query" value="{{ query }}">
+        {% endif %}
+
+        <div class="flex flex-col lg:flex-row gap-6 items-start relative">
+
+            <div class="w-full lg:flex-1">
+
+                <div class="mb-8 p-4 bg-gray-50 rounded-lg shadow-sm">
+                    <div class="flex flex-col sm:flex-row gap-8 items-start w-full justify-center">
+                         <div class="flex flex-col items-center sm:items-start">
+                            <span class="font-bold text-gray-700 mb-2">{% trans "Бренды:" %}</span>
+                            <div class="flex flex-wrap gap-3 justify-center sm:justify-start">
+                                {% for brand in brands %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="brand" value="{{ brand.id }}" id="brand_{{ brand.id }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500" {% if brand.id in selected_brand_ids %}checked{% endif %}>
+                                    <label for="brand_{{ brand.id }}" class="ml-2 text-sm font-medium text-gray-900 cursor-pointer">{{ brand.name }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center sm:items-start border-l pl-0 sm:pl-6 border-gray-200">
+                            <span class="font-bold text-gray-700 mb-2">{% trans "Категории:" %}</span>
+                            <div class="flex flex-wrap gap-3 justify-center sm:justify-start">
+                                {% for category in categories %}
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="category" value="{{ category.id }}" id="category_{{ category.id }}" class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500" {% if category.id in selected_category_ids %}checked{% endif %}>
+                                    <label for="category_{{ category.id }}" class="ml-2 text-sm font-medium text-gray-900 cursor-pointer">{{ category.name }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-4 border-l pl-0 sm:pl-6 border-gray-200">
+                             <div class="flex items-center">
+                                <input type="checkbox" name="on_sale" value="true" id="on_sale_checkbox" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500" {% if on_sale_checked %}checked{% endif %}>
+                                <label for="on_sale_checkbox" class="ml-2 text-sm font-bold text-red-600 cursor-pointer">{% trans "Только со скидкой" %} %</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-bold text-gray-700">Рейтинг:</span>
+                                <select name="rating" class="bg-white border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 block p-1">
+                                    <option value="">Все</option>
+                                    <option value="4" {% if rating_filter == '4' %}selected{% endif %}>4+ ★</option>
+                                    <option value="3" {% if rating_filter == '3' %}selected{% endif %}>3+ ★</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center sm:items-start min-w-[200px]">
+                            <span class="font-bold text-gray-700 mb-2">{% trans "Сортировка:" %}</span>
+                            <select name="sort_by" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option value="">{% trans "По умолчанию" %}</option>
+                                <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>{% trans "От дешевых к дорогим" %}</option>
+                                <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>{% trans "От дорогих к дешевым" %}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 mt-4 justify-center sm:justify-end">
+                        <button type="submit" class="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-8 py-2.5 transition">
+                            {% trans "Применить фильтры" %}
+                        </button>
+                        <a href="{% url 'home' %}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-600 transition">
+                            {% trans "Сбросить" %}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for product in products %}
+                    <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+                        <a href="{% url 'product_detail' product.slug %}">
+                            <div class="relative mb-4">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-auto h-auto object-cover rounded">
+                                {% else %}
+                                    <img src="{% static 'images/Photo.png' %}" alt="{{ product.name }}" class="w-full h-48 sm:h-56 object-cover rounded">
+                                {% endif %}
+
+                                {% if product.quantity == 0 %}
+                                    <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow z-10">{% trans "Нет в наличии" %}</span>
+                                {% endif %}
+
+                                <div class="absolute top-2 right-2 z-20">
+                                    {% if product.id in wishlist_product_ids %}
+                                        <a href="{% url 'wishlist_remove' product.id %}" class="bg-white/90 p-1.5 rounded-full shadow-sm text-red-500 hover:text-red-600 block transition">
+                                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'wishlist_add' product.id %}" class="bg-white/90 p-1.5 rounded-full shadow-sm text-gray-400 hover:text-red-500 block transition">
+                                            <svg class="w-5 h-5 stroke-current fill-none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{{ product.name }}</h3>
+                            <p class="text-2xl text-gray-700 mb-4">{{ product.price }} грн</p>
+                        </a>
+                    </div>
+                    {% empty %}
+                         <div class="col-span-full text-center py-10">
+                            <p class="text-xl text-gray-500">{% trans "Товары по выбранным фильтрам не найдены." %}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if products.has_other_pages %}
+                <div class="mt-12 flex justify-center">
+                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                         {% if products.has_previous %}
+                            <a href="?page={{ products.previous_page_number }}{% if query %}&query={{ query }}{% endif %}{% for brand_id in selected_brand_ids %}&brand={{ brand_id }}{% endfor %}{% for cat_id in selected_category_ids %}&category={{ cat_id }}{% endfor %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}{% if on_sale_checked %}&on_sale=true{% endif %}{% if rating_filter %}&rating={{ rating_filter }}{% endif %}{% for key, values in selected_specs.items %}{% for val in values %}&spec_{{ key }}={{ val }}{% endfor %}{% endfor %}"
+                               class="relative inline-flex items-center rounded-l-md px-3 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Пред.</a>
+                        {% endif %}
+
+                        <span class="relative z-10 inline-flex items-center bg-blue-600 px-4 py-2 text-sm font-semibold text-white">{{ products.number }}</span>
+
+                        {% if products.has_next %}
+                            <a href="?page={{ products.next_page_number }}{% if query %}&query={{ query }}{% endif %}{% for brand_id in selected_brand_ids %}&brand={{ brand_id }}{% endfor %}{% for cat_id in selected_category_ids %}&category={{ cat_id }}{% endfor %}{% if current_sort %}&sort_by={{ current_sort }}{% endif %}{% if on_sale_checked %}&on_sale=true{% endif %}{% if rating_filter %}&rating={{ rating_filter }}{% endif %}{% for key, values in selected_specs.items %}{% for val in values %}&spec_{{ key }}={{ val }}{% endfor %}{% endfor %}"
+                               class="relative inline-flex items-center rounded-r-md px-3 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">След.</a>
+                        {% endif %}
+                    </nav>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if available_specs %}
+            <div class="w-full lg:w-1/4 lg:min-w-[250px]">
+                <div class="bg-white rounded-lg shadow-md p-4 sticky top-4 max-h-[232vh] overflow-y-auto custom-scrollbar">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 pb-2 border-b">{% trans "Характеристики" %}</h3>
+
+                    <div class="flex flex-col gap-6">
+                        {% for spec_key, spec_values in available_specs.items %}
+                            <div class="filter-group">
+                                <h4 class="font-semibold text-gray-700 mb-2">{{ spec_key }}</h4>
+                                <div class="flex flex-col gap-1 pl-2 max-h-40 overflow-y-auto">
+                                    {% for value in spec_values %}
+                                        <label class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded p-1">
+                                            <input type="checkbox"
+                                                   name="spec_{{ spec_key }}"
+                                                   value="{{ value }}"
+                                                   class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                                                   {% if value in selected_specs|get_item:spec_key %}checked{% endif %}
+                                            >
+                                            <span class="ml-2 text-sm text-gray-600">{{ value }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="w-full mt-6 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition">
+                        {% trans "Применить" %}
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
-        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <a href="{% url 'show' %}">
-            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская обувь" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерская обувь" %}</h3>
-            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  20,000" %}</p>
-          </a>
-        </div>
-        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <a href="{% url 'show' %}">
-            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская куртка" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерская куртка" %}</h3>
-            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  25,000" %}</p>
-          </a>
-        </div>
-        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <a href="{% url 'show' %}">
-            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерские часы" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерские часы" %}</h3>
-            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  12,000" %}</p>
-          </a>
-        </div>
-        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <a href="{% url 'show' %}">
-            <img src="{% static 'images/Photo.png' %}" alt="Дизайнерский шарф" class="w-full h-48 sm:h-56 object-cover rounded mb-4">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800">{% trans "Дизайнерский шарф" %}</h3>
-            <p class="text-gray-600 text-base sm:text-lg">{% trans "грн  5,000" %}</p>
-          </a>
-        </div>
-      </div>
-    </section>
+    </form>
+</section>
+
 
 {% endblock content %}

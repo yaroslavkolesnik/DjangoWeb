@@ -1,109 +1,243 @@
-{% load static %} {# Загружаем статические файлы с папки static, чтобы использовать {% static %} #}
-{% load i18n %} {# переменая для переводов  #}
+{% load static %}
+{% load i18n %}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <script>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
+          document.documentElement.classList.add('dark');
+      } catch(e) {}
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {# Здесь мы определяем блок для заголовка страницы. шаблоны будут его заполнять. #}
     <title>{% block title %}Мой сайт Django{% endblock %}</title>
     <link rel="icon" href="/favicons/site.webmanifest">
     <link rel="stylesheet" href="{% static 'css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <script src="https://cdn.tailwindcss.com"></script>
-    {% block extra_head %}{% endblock %} {# Дополнительный блок для скриптов/стилей в head #}
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
-    <header class="bg-white shadow-md sticky top-0 z-50">
+<body class="bg-white dark:bg-slate-900 dark:text-slate-200">
+    <header class="bg-white dark:bg-slate-800 shadow-md dark:shadow-slate-700/50 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <button id="menu-toggle" class="button-togle-hiden text-gray-600 hover:text-gray-900 focus:outline-none">
+            <button id="menu-toggle" class="button-togle-hiden text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 focus:outline-none">
                 <svg class="IconWrapper-module--icon__1nWiK IconWrapper-module--normal__2SFZ7" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false" height="24">
                     <path d="M2 6h20v1H2V6zm0 6h20v1H2v-1zm0 7v-1h20v1H2z"></path>
                 </svg>
             </button>
 
-            <div><a  href="{% url 'home' %}" class="text-2xl sm:text-3xl font-bold text-gray-800">DesignShop</a></div>
+            <div><a href="{% url 'home' %}" class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-slate-100">Shop</a></div>
 
             <div class="hidden-dekstop sm:flex sm:items-center sm:space-x-6">
                 <nav class="flex space-x-6">
-                    <a href="{% url 'home' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">{% trans "Главная" %}</a>
-                    <a href="{% url 'about' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">{% trans "О нас" %}</a>
-                    <a href="{% url 'contact' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg">{% trans "Контакты" %}</a>
+                    <a href="{% url 'home' %}" class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 text-center text-base sm:text-lg">{% trans "Главная" %}</a>
+                    <a href="{% url 'about' %}" class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 text-center text-base sm:text-lg">{% trans "О нас" %}</a>
+                    <a href="{% url 'contact' %}" class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 text-center text-base sm:text-lg">{% trans "Контакты" %}</a>
                 </nav>
 
+                <form action="{% url 'home' %}" method="get" class="hidden md:flex items-center mx-4 flex-grow max-w-xs lg:max-w-sm">
+                    <div class="relative w-full">
+                        <input
+                            type="text"
+                            name="query"
+                            value="{{ query|default:'' }}"
+                            placeholder="{% trans 'Поиск...' %}"
+                            class="w-full border border-gray-300 dark:border-slate-600 rounded-lg py-1.5 pl-4 pr-10 text-sm bg-white dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gray-800 dark:focus:ring-sky-500"
+                        >
+                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-100">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+
                 <div class="flex items-center space-x-4">
+
+                    <div class="hidden lg:flex items-center space-x-3 border-r border-gray-300 dark:border-slate-600 pr-4 mr-1">
+                        {% if user.is_authenticated %}
+                            <div class="flex flex-col items-end leading-tight">
+                               <!-- <span class="text-xs text-gray-500">{% trans "Вы вошли как" %}</span> -->
+                                <a href="{% url 'profile' %}" class="text-sm font-bold text-gray-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-sky-400 transition underline decoration-dotted">
+                                    {{ user.username }}
+                                </a>
+                            </div>
+                            <form action="{% url 'logout' %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="text-sm text-red-500 hover:text-red-700 font-medium ml-1" title="{% trans 'Выйти' %}">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="text-sm font-medium text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-sky-400 transition">{% trans "Вход" %}</a>
+                            <span class="text-gray-300 dark:text-slate-600">|</span>
+                            <a href="{% url 'register' %}" class="text-sm font-medium text-gray-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-sky-400 transition">{% trans "Регистрация" %}</a>
+                        {% endif %}
+                    </div>
                     <form action="{% url 'set_language' %}" method="post" class="relative">
                     {% csrf_token %}
                         <input name="next" type="hidden" value="{{ request.path }}">
-                            <select name="language" onchange="this.form.submit()" class="appearance-none bg-gray-100 text-gray-800 text-sm sm:text-base border border-gray-300 rounded-lg px-3 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-gray-800 cursor-pointer">
+                            <select name="language" onchange="this.form.submit()" class="appearance-none bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-slate-200 text-sm sm:text-base border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-gray-800 dark:focus:ring-sky-500 cursor-pointer">
                                 <option value="ru" {% if request.LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
                                 <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
                                 <option value="uk" {% if request.LANGUAGE_CODE == 'uk' %}selected{% endif %}>Українська</option>
                             </select>
-                            <svg class="absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <svg class="absolute right-1 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 dark:text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </form>
 
-                    <a href="{% url 'favorites' %}" class="text-gray-600 hover:text-gray-900 relative">
+                    <a href="{% url 'favorites' %}" class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 relative">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+                       {% if cart|length > 0 %}
+                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center justify-center min-w-[1.25rem] h-5 shadow-sm border border-white dark:border-slate-800">
+                                {{ cart|length }}
+                            </span>
+                        {% endif %}
                     </a>
+
+                    <a href="{% url 'wishlist_view' %}" class="text-gray-700 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 relative">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        {% if wishlist|length > 0 %}
+                            <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                                {{ wishlist|length }}
+                            </span>
+                        {% endif %}
+                    </a>
+
+                    <button
+                      id="dark-mode-toggle"
+                      class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 focus:outline-none"
+                      aria-label="Toggle dark mode"
+                      title="Toggle dark mode"
+                    >
+                      <i id="theme-icon-sun"  class="fa-solid fa-sun  text-xl hidden"></i>
+                      <i id="theme-icon-moon" class="fa-solid fa-moon text-xl hidden"></i>
+                    </button>
                 </div>
             </div>
 
             <div class="favorites-hiden">
-                <a href="{% url 'favorites' %}" class="text-gray-600 hover:text-gray-900 relative">
+                <a href="{% url 'favorites' %}" class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 relative">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+                    {% if cart|length > 0 %}
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center justify-center min-w-[1.25rem] h-5 shadow-sm border border-white dark:border-slate-800">
+                            {{ cart|length }}
+                        </span>
+                    {% endif %}
+                </a>
+
+                <a href="{% url 'wishlist_view' %}" class="text-gray-700 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 relative">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    {% if wishlist|length > 0 %}
+                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                            {{ wishlist|length }}
+                        </span>
+                    {% endif %}
                 </a>
             </div>
         </div>
 
-        <div id="mobile-menu" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 p-4" >
-            <button id="menu-close" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900">
+        <div id="mobile-menu" class="fixed top-0 left-0 w-64 h-full bg-white dark:bg-slate-800 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 p-4">
+            <button id="menu-close" class="absolute top-4 right-4 text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
+
+            <div class="mt-12 mb-6">
+                <form action="{% url 'home' %}" method="get" class="relative">
+                    <input
+                        type="text"
+                        name="query"
+                        placeholder="{% trans 'Найти...' %}"
+                        class="w-full border border-gray-300 dark:border-slate-600 rounded-lg py-2 pl-4 pr-10 bg-white dark:bg-slate-700 dark:text-slate-200 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gray-800 dark:focus:ring-sky-500"
+                    >
+                    <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-slate-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
             <nav class="mt-12 space-y-4 nav-header-mobil">
-                <a href="{% url 'home' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg link-header-active">{% trans "Главная" %}</a>
-                <a href="{% url 'about' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg  link-header-active">{% trans "О нас" %}</a>
-                <a href="{% url 'contact' %}" class="text-gray-600 hover:text-gray-900 text-center text-base sm:text-lg  link-header-active">{% trans "Контакты" %}</a>
+                <a href="{% url 'home' %}" class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 text-center text-base sm:text-lg link-header-active">{% trans "Главная" %}</a>
+                <a href="{% url 'about' %}" class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 text-center text-base sm:text-lg  link-header-active">{% trans "О нас" %}</a>
+                <a href="{% url 'contact' %}" class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 text-center text-base sm:text-lg  link-header-active">{% trans "Контакты" %}</a>
             </nav>
+
+            <div class="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700">
+                {% if user.is_authenticated %}
+                    <div class="text-center mb-3">
+                        <span class="text-gray-500 dark:text-slate-500 text-sm">{% trans "Привет," %}</span>
+                        <a href="{% url 'profile' %}" class="text-sm font-bold text-gray-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-sky-400 transition underline decoration-dotted">
+                            {{ user.username }}
+                        </a>
+                    </div>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 py-2 rounded font-semibold hover:bg-red-200 dark:hover:bg-red-800 transition">
+                            {% trans "Выйти" %}
+                        </button>
+                    </form>
+                {% else %}
+                    <div class="flex flex-col space-y-3">
+                        <a href="{% url 'login' %}" class="w-full border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 dark:bg-slate-700 text-center py-2 rounded font-medium hover:bg-gray-50 dark:hover:bg-slate-600">
+                            {% trans "Войти" %}
+                        </a>
+                        <a href="{% url 'register' %}" class="w-full bg-gray-800 dark:bg-sky-600 text-white text-center py-2 rounded font-medium hover:bg-gray-700 dark:hover:bg-sky-500">
+                            {% trans "Регистрация" %}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
             <div class="mt-6">
                <form action="{% url 'set_language' %}" method="post" class="relative">
                 {% csrf_token %}
                     <input name="next" type="hidden" value="{{ request.path }}">
-                        <select name="language" onchange="this.form.submit()" class="appearance-none w-full bg-gray-100 text-gray-800 text-sm border border-gray-300 rounded-lg px-3 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-gray-800 cursor-pointer">
+                        <select name="language" onchange="this.form.submit()" class="appearance-none w-full bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-slate-200 text-sm border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-gray-800 dark:focus:ring-sky-500 cursor-pointer">
                             <option value="ru" {% if request.LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
                             <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
                             <option value="uk" {% if request.LANGUAGE_CODE == 'uk' %}selected{% endif %}>Українська</option>
                         </select>
-                        <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 dark:text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </form>
+                <div class="mt-4 flex items-center justify-between">
+                    <span class="text-sm text-gray-600 dark:text-slate-400">{% trans "Тема" %}</span>
+                    <button id="dark-mode-toggle-mobile"
+                        class="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 focus:outline-none"
+                        aria-label="Toggle dark mode">
+                        <i id="theme-icon-sun-mobile"  class="fa-solid fa-sun  text-xl hidden"></i>
+                        <i id="theme-icon-moon-mobile" class="fa-solid fa-moon text-xl hidden"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
     {% block breadcrumbs %}
-    <nav class="bg-gray-100 py-4 border-b border-gray-200">
+    <nav class="bg-gray-100 dark:bg-slate-800 py-4 border-b border-gray-200 dark:border-slate-700">
         <div class="container mx-auto px-4">
             {% with current_crumb=breadcrumbs|last %}
-            <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-2">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-slate-200 mb-2">
                 {{ current_crumb.name }}
             </h2>
              {% endwith %}
 
-            <ol class="flex flex-wrap items-center text-sm sm:text-base text-gray-600 breadcrumbs_li">
+            <ol class="flex flex-wrap items-center text-sm sm:text-base text-gray-600 dark:text-slate-400 breadcrumbs_li">
                 {% for crumb in breadcrumbs %}
                     {% if forloop.last %}
                         <li aria-current="page" class="flex items-center">
-                            <span class="text-gray-800 font-medium">{{ crumb.name }}</span>
+                            <span class="text-gray-800 dark:text-slate-200 font-medium">{{ crumb.name }}</span>
                         </li>
                     {% else %}
                         <li class="flex items-center">
-                            <a href="{{ crumb.url }}" class="hover:text-gray-900 text-gray-600">{{ crumb.name }}</a>
+                            <a href="{{ crumb.url }}" class="hover:text-gray-900 dark:hover:text-slate-100 text-gray-600 dark:text-slate-400">{{ crumb.name }}</a>
                         </li>
                     {% endif %}
                 {% endfor %}
@@ -113,18 +247,17 @@
 {% endblock %}
 
     <main id="content" class="container mx-auto px-4 py-8 flex-grow">
-        {# тут будет находиться уникальный контент каждой страницы #}
         {% block content %}
         {% endblock content %}
     </main>
 
-   <footer class="bg-gray-800 text-white py-8">
+   <footer class="bg-gray-800 dark:bg-slate-900 text-white py-8">
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
         <div>
           <h3 class="text-lg sm:text-xl font-semibold mb-4">DesignShop</h3>
-          <p class="text-sm sm:text-base text-gray-300">{% trans "Уникальные дизайнерские вещи для вашего стиля. Мы создаем эксклюзивные коллекции с любовью к деталям." %}</p>
+          <p class="text-sm sm:text-base text-gray-300">{% trans "Інтернет магазин електроніки та мобільних пристроїв" %}</p>
         </div>
 
         <div>
@@ -138,31 +271,25 @@
         <div>
           <h3 class="text-lg sm:text-xl font-semibold mb-4">{% trans "Контакты" %}</h3>
           <ul class="text-sm sm:text-base text-gray-300 space-y-2">
-            <li>Email: <a href="#" class="hover:text-white transition">info@designshop.com</a></li>
-            <li>{% trans "Телефон:" %} <a href="#" class="hover:text-white transition">+7 (999) 123-45-67</a></li>
-            <li>{% trans "Адрес: г. Харьков" %}</li>
+            <li>Email: <a href="#" class="hover:text-white transition">тут_буде_почта@gmail.com</a></li>
+            <li>{% trans "Телефон:" %} <a href="#" class="hover:text-white transition">тут буде номер телефона</a></li>
+            <li>{% trans "Адрес: м. Місто" %}</li>
           </ul>
         </div>
       </div>
       <div class="mt-8 flex justify-center space-x-4">
         <a href="#" class="text-gray-300 hover:text-white transition">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.22-1.78L9 12l-4.78 2.78c-.14.57-.22 1.16-.22 1.78 0 4.08 3.05 7.44 7 7.93V19.93zm2-15.86V8h-2V3.07c3.95.49 7 3.85 7 7.93 0 .62-.08 1.21-.22 1.78L15 10l4.78-2.78c.14-.57.22-1.16.22-1.78 0-4.08-3.05-7.44-7-7.93z"></path></svg>
-        </a>
-        <a href="#" class="text-gray-300 hover:text-white transition">
           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15h-2v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.8c4.56-.93 8-4.96 8-9.8z"></path></svg>
-        </a>
-        <a href="#" class="text-gray-300 hover:text-white transition">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 15h-2v-2h2v2zm0-4h-2V7h2v6zm-4 4h-2v-2h2v2zm0-4h-2V7h2v6zm-4 4h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>
         </a>
       </div>
       <div class="mt-8 text-center">
-        <p class="text-sm sm:text-base text-gray-300">{% trans "&copy; 2025 DesignShop. Все права защищены." %}</p>
+        <p class="text-sm sm:text-base text-gray-300">{% trans "&copy; 2025 Shop. Всі права захищені." %}</p>
       </div>
     </div>
   </footer>
 
      <script src="{% static 'js/main.js' %}"></script>
 
-    {% block extra_body %}{% endblock %} {# Дополнительный блок для скриптов в конце body #}
+    {% block extra_body %}{% endblock %}
 </body>
 </html>

@@ -2,7 +2,6 @@
 
 {% load i18n %} {# переменая для переводов  #}
 
-{% block breadcrumbs %}{% endblock %}
 
 {% block title %} {% trans "Главная страница - Мой сайт Django" %}{% endblock %} {# Переопределяем блок title #}
 
@@ -10,71 +9,98 @@
 
 {% load static %}
 
-<div class="max-w-2xl mx-auto">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">{% trans "Оформление заказа" %}</h1>
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Helloo</h1>
+<div class="max-w-4xl mx-auto py-8 px-4">
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6 text-center">{% trans "Оформление заказа" %}</h1>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">{% trans "Ваши товары" %}</h2>
-                <div class="space-y-4">
-                    {% for item in cart_items %}
-                        <div class="flex items-center justify-between border-b pb-4 last:border-b-0">
-                            <div class="flex items-center space-x-4">
-                                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-16 h-16 object-cover rounded">
-                                <div>
-                                    <h3 class="text-base sm:text-lg font-medium text-gray-800">{{ item.name }}</h3>
-                                    <p class="text-gray-600 text-sm sm:text-base">{{ item.quantity }} </p>
-                                </div>
-                            </div>
-                            <p class="text-base sm:text-lg font-semibold text-gray-800">грн</p>
-                        </div>
-                    {% empty %}
-                        <p class="text-gray-600">{% trans "Ваша корзина пуста" %}</p>
-                    {% endfor %}
-                    <div class="mt-4 pt-4 border-t border-gray-200">
-                        <p class="text-lg sm:text-xl font-bold text-gray-800">{% trans "Итого" %}: грн</p>
-                    </div>
-                </div>
-            </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">{% trans "Контактные данные" %}</h2>
 
-
-            <form action="#" method="post" class="bg-white rounded-lg shadow-md p-6">
+            <form action="." method="post">
                 {% csrf_token %}
-                <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">{% trans "Информация для оплаты" %}</h2>
 
-
-                <div class="mb-4">
-                    <label for="full_name" class="block text-sm sm:text-base text-gray-700 font-medium mb-1">{% trans "Имя и фамилия" %}</label>
-                    <input type="text" id="full_name" name="full_name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="space-y-4">
+                    {% for field in form %}
+                        {% if field.name != 'payment_method' %}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ field.errors.as_text }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
 
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-700 mb-3">{% trans "Способ оплаты" %}</h2>
 
-                <div class="mb-4">
-                    <label for="address" class="block text-sm sm:text-base text-gray-700 font-medium mb-1">{% trans "Адрес доставки" %}</label>
-                    <textarea id="address" name="address" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
-                </div>
-
-
-                <div class="mb-4">
-                    <label class="block text-sm sm:text-base text-gray-700 font-medium mb-1">{% trans "Способ оплаты" %}</label>
-                    <div class="space-y-2">
-                        <label class="flex items-center">
-                            <input type="radio" name="payment_method" value="credit_card" required class="mr-2 text-blue-500 focus:ring-blue-500">
-                            <span class="text-gray-600">{% trans "Кредитная карта" %}</span>
+                    <div class="space-y-3">
+                        {% for radio in form.payment_method %}
+                        <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition relative has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50">
+                            <div class="flex items-center h-5">
+                                {{ radio.tag }} </div>
+                            <div class="ml-3">
+                                <span class="block text-sm font-medium text-gray-900">
+                                    {{ radio.choice_label }}
+                                </span>
+                            </div>
                         </label>
-                        <label class="flex items-center">
-                            <input type="radio" name="payment_method" value="bank_transfer" class="mr-2 text-blue-500 focus:ring-blue-500">
-                            <span class="text-gray-600">{% trans "Банковский перевод" %}</span>
-                        </label>
+                        {% endfor %}
                     </div>
                 </div>
 
-
-                <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                    {% trans "Оплатить" %}
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition mt-8 shadow-lg">
+                    {% trans "Подтвердить заказ" %}
                 </button>
             </form>
         </div>
+
+        <div class="h-fit sticky top-24">
+            <div class="bg-gray-50 rounded-lg shadow-md p-6 border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">{% trans "Ваш заказ" %}</h2>
+
+                <div class="space-y-4 divide-y divide-gray-200 max-h-[400px] overflow-y-auto pr-2">
+                    {% for item in cart %}
+                        <div class="flex justify-between items-start pt-3 first:pt-0">
+                            <div class="flex items-start space-x-3">
+                               {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" class="w-14 h-14 object-cover rounded-md border border-gray-200">
+                               {% else %}
+                                    <div class="w-14 h-14 bg-gray-200 rounded-md flex items-center justify-center text-gray-400">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    </div>
+                               {% endif %}
+
+                               <div>
+                                   <p class="font-medium text-gray-800 text-sm line-clamp-2 leading-tight">{{ item.product.name }}</p>
+                                   <p class="text-gray-500 text-xs mt-1">{% trans "Кол-во" %}: {{ item.quantity }}</p>
+                               </div>
+                            </div>
+                            <p class="font-semibold text-gray-800 text-sm whitespace-nowrap">{{ item.total_price }} грн</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-gray-300">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-600">{% trans "Товары" %}</span>
+                        <span class="font-medium text-gray-900">{{ cart.get_total_price }} грн</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-gray-600">{% trans "Доставка" %}</span>
+                        <span class="font-medium text-green-600">{% trans "Бесплатно" %}</span>
+                    </div>
+                    <div class="flex justify-between items-center border-t border-gray-300 pt-4">
+                        <span class="text-lg font-bold text-gray-800">{% trans "Итого:" %}</span>
+                        <span class="text-2xl font-bold text-blue-600">{{ cart.get_total_price }} грн</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}

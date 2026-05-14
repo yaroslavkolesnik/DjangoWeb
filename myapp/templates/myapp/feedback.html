@@ -1,0 +1,20 @@
+{% extends 'myapp/base.html' %} {# Указываем, от какого шаблона наследуем #}
+
+{% load i18n %} {# переменая для переводов  #}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %} {% trans "Главная страница - Мой сайт Django" %}{% endblock %} {# Переопределяем блок title #}
+
+{% block content %} {# Заполняем основной блок контента #}
+
+{% load static %}
+<form method="post" class="p-3 border rounded bg-light">
+    {% csrf_token %}
+
+    <div class="mb-3">{{ form.name.label_tag }} {{ form.name }}</div>
+    <div class="mb-3">{{ form.message.label_tag }} {{ form.message }}</div>
+    <div class="mb-3"> {{ form.message.label_tag }} {{ form.product }}</div>
+    <button type="submit" class="btn btn-primary">Надіслати</button>
+</form>
+{% endblock content %}

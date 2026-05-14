@@ -1,0 +1,138 @@
+{% extends 'myapp/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Личный кабинет" %}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8 text-gray-800">{% trans "Личный кабинет" %}</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 sticky top-24">
+                <h2 class="text-xl font-bold mb-4 text-gray-800">{% trans "Мои данные" %}</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% for field in user_form %}
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                        <input
+                            type="{{ field.field.widget.input_type }}"
+                            name="{{ field.name }}"
+                            id="{{ field.id_for_label }}"
+                            value="{{ field.value|default:'' }}"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                        {% if field.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ field.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+                        {% trans "Сохранить изменения" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">{% trans "История заказов" %}</h2>
+
+            {% if orders %}
+                <div class="space-y-6">
+                    {% for order in orders %}
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+
+                        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex flex-wrap justify-between items-center gap-4">
+
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase">{% trans "Заказ" %} #{{ order.id }}</p>
+                                <p class="font-semibold text-gray-800">{{ order.created|date:"d.m.Y" }}</p>
+                            </div>
+
+                            <div class="flex flex-col items-center">
+                                <p class="text-xs text-gray-500 uppercase">{% trans "Статус" %}</p>
+                                {% if order.status == 'new' %}
+                                    <span class="text-blue-600 font-bold">{% trans "Новый" %}</span>
+                                {% elif order.status == 'confirmed' %}
+                                    <span class="text-indigo-600 font-bold">{% trans "В обработке" %}</span>
+                                {% elif order.status == 'shipped' %}
+                                    <span class="text-purple-600 font-bold">🚚 {% trans "Отправлен" %}</span>
+                                {% elif order.status == 'completed' %}
+                                    <span class="text-green-600 font-bold">✅ {% trans "Выполнен" %}</span>
+                                {% elif order.status == 'cancelled' %}
+                                    <span class="text-red-600 font-bold">❌ {% trans "Отменен" %}</span>
+                                {% endif %}
+                            </div>
+
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase">{% trans "Сумма" %}</p>
+                                <p class="font-bold text-gray-900">{{ order.get_total_cost }} грн</p>
+                            </div>
+
+                            <div>
+                                 {% if order.paid %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        {% trans "Оплачено" %}
+                                    </span>
+                                 {% else %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        {% trans "Не оплачено" %}
+                                    </span>
+                                 {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <ul class="divide-y divide-gray-100">
+                                {% for item in order.items.all %}
+                                <li class="py-3 flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        {% if item.product.image %}
+                                            <img src="{{ item.product.image.url }}" class="w-12 h-12 object-cover rounded bg-gray-100">
+                                        {% else %}
+                                            <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">No Img</div>
+                                        {% endif %}
+                                        <div>
+                                            <a href="{% url 'product_detail' item.product.slug %}" class="font-medium text-gray-900 hover:text-blue-600 text-sm">
+                                                {{ item.product.name }}
+                                            </a>
+                                            <p class="text-xs text-gray-500">
+                                                {{ item.quantity }} x {{ item.price }} грн
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right font-medium text-gray-900 text-sm">
+                                        {{ item.get_cost }} грн
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12 bg-white rounded-lg border border-gray-200">
+                    <p class="text-gray-500">{% trans "Вы еще ничего не заказывали." %}</p>
+                    <a href="{% url 'home' %}" class="text-blue-600 hover:underline mt-2 inline-block">{% trans "Перейти в каталог" %}</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

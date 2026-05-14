@@ -14,8 +14,10 @@ from pathlib import Path
 import os
 import django_heroku
 import dj_database_url
-
+from dotenv import load_dotenv
 from django.utils.translation import gettext_lazy as _
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,20 +30,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-8w!st8qi2@wg$o6%c5wixxjf8w_ztu87o5b0mz7mxyb)dsiu8u')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = ['*']  # Heroku будет управлять этим
 
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp'
+    'myapp',
+    'users',
+    'django_json_widget',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +74,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'myapp.context_processors.cart',
+                'myapp.context_processors.wishlist',
             ],
         },
     },
@@ -88,7 +97,7 @@ DATABASES = {
 
 # Настройка PostgreSQL для продакшена
 if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    DATABASES['default'] = dj_database_url.parse(os.environ.get(' postgres://ufe9176hch41ri:p53b24659ce2bbbe91fe56ee30b82d27c758e82d7d6a83bf76e5f24b9ccf6eed8@c5cqb8h0eop3g3.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/dfl0sqt9s0njl8'))
 
 
 # Password validation
@@ -113,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'uk'
 
 TIME_ZONE = 'UTC'
 
@@ -122,9 +131,9 @@ USE_I18N = True
 USE_TZ = True
 
 LANGUAGES = [
+    ('uk', _('Ukrainian')),
     ('ru', _('Russian')),
     ('en', _('English')),
-    ('uk', _('Ukrainian')),
 ]
 
 LOCALE_PATHS = [
@@ -142,6 +151,11 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+MEDIA_URL = '/media/'
+
+# Папка на компьютере, куда файлы будут сохраняться
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Настройка для WhiteNoise (обслуживание статических файлов)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -150,5 +164,24 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Куда перенаправлять пользователя после успешного входа
+LOGIN_REDIRECT_URL = 'home'
+
+# Куда перенаправлять после выхода из системы
+LOGOUT_REDIRECT_URL = 'home'
+
+# Адрес страницы входа (если неавторизованный пользователь попытается зайти в профиль)
+LOGIN_URL = 'login'
+
 # Активация django-heroku (должно быть в конце файла)
 django_heroku.settings(locals())
+
+WISHLIST_SESSION_ID = 'wishlist'
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uk'
+
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('uk', 'ru', 'en')
+
+MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'uk'
+
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')

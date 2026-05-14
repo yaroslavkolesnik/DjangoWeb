@@ -1,42 +1,253 @@
 {% extends 'myapp/base.html' %}
+{% load i18n %}
+{% load static %}
 
-{% load i18n %} {# переменая для переводов  #}
-
-{% block title %} {% trans "Товар - Мой сайт Django" %} {% endblock %}
+{# Титул страницы будет именем товара #}
+{% block title %} {{ product.name }} - {% trans "Мой сайт Django" %}{% endblock %}
 
 {% block content %}
 
-{% load static %}
+<section class="page container mx-auto py-8 max-w-4xl">
 
-<section id="product" class="page">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div class="flex flex-col space-y-4">
-          <img src="{% static 'images/Photo.png' %}" alt="Дизайнерская сумка" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg shadow-md">
-          <div class="flex space-x-2 overflow-x-auto">
-            <img src="#" alt="Миниатюра 1" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition">
-            <img src="#" alt="Миниатюра 2" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition">
-            <img src="#" alt="Миниатюра 3" class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition">
-          </div>
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+
+    <div class="mb-6">
+        <div class="w-full overflow-hidden rounded-lg bg-gray-50 border border-gray-200 mb-4 relative group flex items-center justify-center"
+             style="height: 480px;">
+            {% if product.image %}
+                <img id="mainImage" src="{{ product.image.url }}" alt="{{ product.name }}"
+                     class="max-w-full max-h-full object-contain cursor-pointer transition-opacity duration-300 p-4">
+            {% else %}
+                <img id="mainImage" src="{% static 'images/Photo.png' %}" alt="{{ product.name }}"
+                     class="max-w-full max-h-full object-contain p-4">
+            {% endif %}
         </div>
-        <div class="bg-white rounded-lg shadow-md p-6">
-          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-4">{% trans "Дизайнерская сумка" %}</h1>
-          <p class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">{% trans "грн  15,000" %}</p>
-          <p class="text-base sm:text-lg text-gray-600 mb-6">{% trans "Элегантная сумка ручной работы из натуральной кожи. Идеально подходит для повседневного использования и особых случаев. Сочетание классического дизайна и современных технологий обеспечивает долговечность и стиль." %}</p>
-          <div class="mb-6">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">{% trans "Характеристики" %}</h3>
-            <ul class="text-base sm:text-lg text-gray-600 list-disc list-inside">
-              <li>{% trans "Материал: Натуральная кожа" %}</li>
-              <li>{% trans "Размеры: 30x20x10 см" %}</li>
-              <li>{% trans "Цвет: Черный" %}</li>
-              <li>{% trans "Вес: 0.8 кг" %}</li>
-            </ul>
-          </div>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <button class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition">{% trans "Добавить в корзину" %}</button>
-            <button class="border border-gray-800 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-100 transition">{% trans "В избранное" %}</button>
-          </div>
+
+        {% if product.images.all %}
+        <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-3">
+            {% if product.image %}
+            <div class="cursor-pointer border-2 border-gray-200 hover:border-blue-500 rounded-lg overflow-hidden transition bg-gray-50 aspect-square flex items-center justify-center"
+                 onclick="changeMainImage('{{ product.image.url }}')">
+                <img src="{{ product.image.url }}" class="max-w-full max-h-full object-contain p-1">
+            </div>
+            {% endif %}
+
+            {% for photo in product.images.all %}
+            <div class="cursor-pointer border-2 border-gray-200 hover:border-blue-500 rounded-lg overflow-hidden transition bg-gray-50 aspect-square flex items-center justify-center"
+                 onclick="changeMainImage('{{ photo.image.url }}')">
+                <img src="{{ photo.image.url }}" class="max-w-full max-h-full object-contain p-1">
+            </div>
+            {% endfor %}
         </div>
+        {% endif %}
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">{{ product.name }}</h1>
+
+    {% if product.brand %}
+    <p class="text-2xl text-gray-700 mb-4">{% trans "Бренд" %}: {{ product.brand.name }}</p>
+    {% endif %}
+
+    <div class="mb-6">
+        {% if product.old_price and product.old_price > product.price %}
+            <p class="text-gray-500 text-lg line-through mb-1">{% trans "Старая цена:" %} {{ product.old_price }} грн</p>
+            <div class="flex items-center gap-3">
+                <p class="text-4xl font-bold text-red-600">{{ product.price }} грн</p>
+                <span class="bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-full animate-pulse">
+                    {% trans "Скидка" %} -{{ product.get_sale_percent }}%
+                </span>
+            </div>
+        {% else %}
+            <p class="text-3xl font-semibold text-gray-900">{{ product.price }} {% trans "грн" %}</p>
+        {% endif %}
+    </div>
+
+    {% if product.quantity > 0 %}
+        <p class="text-green-600 font-medium mb-6">
+            ✔ {% trans "В наличии" %}: {{ product.quantity }} {% trans "шт." %}
+        </p>
+
+        <div class="flex items-end gap-4 mb-8">
+
+            <form action="{% url 'cart_add' product.id %}" method="post" class="flex items-end gap-4">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">{% trans "Количество:" %}</label>
+                    <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity }}" class="w-24 border border-gray-300 rounded px-3 py-2 text-center">
+                    {{ cart_product_form.override }}
+                </div>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-lg transition transform hover:-translate-y-0.5 h-[42px]">
+                    {% trans "В корзину" %}
+                </button>
+            </form>
+
+            <div class="h-[42px] flex items-center">
+                {% if product.id in wishlist_product_ids %}
+                    <a href="{% url 'wishlist_remove' product.id %}"
+                       class="flex items-center justify-center w-[42px] h-[42px] border border-red-200 bg-red-50 text-red-600 rounded hover:bg-red-100 transition shadow-sm"
+                       title="{% trans 'Удалить из избранного' %}">
+                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </a>
+                {% else %}
+                    <a href="{% url 'wishlist_add' product.id %}"
+                       class="flex items-center justify-center w-[42px] h-[42px] border border-gray-300 text-gray-400 rounded hover:text-red-500 hover:border-red-300 hover:bg-red-50 transition shadow-sm"
+                       title="{% trans 'Добавить в избранное' %}">
+                        <svg class="w-6 h-6 stroke-current fill-none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+
+        <div class="flex items-center gap-4 mb-8">
+            <div>
+                <p class="text-red-500 font-bold text-xl mb-2">
+                    ✖ {% trans "Нет в наличии" %}
+                </p>
+                <button disabled class="bg-gray-300 text-gray-500 font-bold py-2 px-6 rounded cursor-not-allowed">
+                    {% trans "Товар закончился" %}
+                </button>
+            </div>
+
+            <div class="mt-8">
+                 {% if product.id in wishlist_product_ids %}
+                    <a href="{% url 'wishlist_remove' product.id %}" class="flex items-center justify-center w-[42px] h-[42px] border border-red-200 bg-red-50 text-red-600 rounded hover:bg-red-100 transition shadow-sm">
+                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </a>
+                {% else %}
+                    <a href="{% url 'wishlist_add' product.id %}" class="flex items-center justify-center w-[42px] h-[42px] border border-gray-300 text-gray-400 rounded hover:text-red-500 hover:border-red-300 transition shadow-sm">
+                        <svg class="w-6 h-6 stroke-current fill-none" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+  </div>
+
+    {% if similar_products %}
+        <div class="mt-16 border-t border-gray-200 pt-10">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">{% trans "Вам также может понравиться" %}</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                {% for sim_product in similar_products %}
+                <div class="group relative bg-white border border-gray-100 rounded-lg p-4 hover:shadow-lg transition">
+                    <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-40 mb-4">
+                        {% if sim_product.image %}
+                            <img src="{{ sim_product.image.url }}" alt="{{ sim_product.name }}" class="h-full w-full object-cover object-center lg:h-full lg:w-full group-hover:opacity-75">
+                        {% else %}
+                            <div class="h-40 w-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs">No Photo</div>
+                        {% endif %}
+                    </div>
+                    <div class="flex justify-between">
+                        <div>
+                            <h3 class="text-sm text-gray-700">
+                                <a href="{% url 'product_detail' sim_product.slug %}">
+                                    <span aria-hidden="true" class="absolute inset-0"></span>
+                                    {{ sim_product.name }}
+                                </a>
+                            </h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ sim_product.brand.name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                         {% if sim_product.old_price and sim_product.old_price > sim_product.price %}
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-gray-400 line-through">{{ sim_product.old_price }} грн</span>
+                                <span class="text-sm font-bold text-red-600">{{ sim_product.price }} грн</span>
+                            </div>
+                        {% else %}
+                            <p class="text-sm font-medium text-gray-900">{{ sim_product.price }} грн</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8 mt-8">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">{% trans "Характеристики" %}</h2>
+
+    {% if product.specifications %}
+        <div class="border rounded-lg overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for key, value in product.specifications.items %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 align-top text-sm font-medium text-gray-700 bg-gray-50 w-1/3 break-words">
+                            {{ key }}
+                        </td>
+                        <td class="px-6 py-4 align-top text-sm text-gray-900 break-words whitespace-pre-line">
+                            {{ value }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-gray-500">{% trans "Характеристики не указаны" %}</p>
+    {% endif %}
+  </div>
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">{% trans "Отзывы" %} ({{ reviews.count }})</h2>
+
+    {% if reviews %}
+      {% for review in reviews %}
+        <div class="border-b border-gray-200 py-4">
+          <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                  <p class="font-bold text-lg text-gray-800">{{ review.name }}</p>
+                  <span class="flex items-center bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                      {{ review.rating }} ★
+                  </span>
+              </div>
+              <p class="text-sm text-gray-500">{{ review.created_at|date:"d M Y, H:i" }}</p>
+          </div>
+          <p class="text-gray-700 mt-2">{{ review.message|linebreaks }}</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-gray-500">{% trans "Отзывов пока нет. Будьте первым!" %}</p>
+    {% endif %}
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">{% trans "Оставить отзыв" %}</h2>
+
+    <form method="post" action="">
+      {% csrf_token %}
+
+      <div class="mb-4">
+        <label for="{{ form.name.id_for_label }}" class="block text-gray-700 font-bold mb-2">{{ form.name.label }}</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+          <p class="text-red-500 text-xs italic mt-1">{{ form.name.errors.as_text }}</p>
+        {% endif %}
       </div>
-    </section>
+
+      <div class="mb-4">
+        <label for="{{ form.rating.id_for_label }}" class="block text-gray-700 font-bold mb-2">{{ form.rating.label }}</label>
+        {{ form.rating }}
+        {% if form.rating.errors %}
+          <p class="text-red-500 text-xs italic mt-1">{{ form.rating.errors.as_text }}</p>
+        {% endif %}
+      </div>
+      <div class="mb-4">
+        <label for="{{ form.message.id_for_label }}" class="block text-gray-700 font-bold mb-2">{{ form.message.label }}</label>
+        {{ form.message }}
+        {% if form.message.errors %}
+          <p class="text-red-500 text-xs italic mt-1">{{ form.message.errors.as_text }}</p>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition focus:outline-none focus:shadow-outline">
+        {% trans "Отправить" %}
+      </button>
+    </form>
+  </div>
+
+</section>
 
 {% endblock content %}

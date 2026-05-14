@@ -1,0 +1,12 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    <li>
+        {# Ссылка ведет на наш кастомный url, добавленный в get_urls #}
+        <a href="import-csv/" class="addlink">
+            Импорт CSV
+        </a>
+    </li>
+{% endblock %}

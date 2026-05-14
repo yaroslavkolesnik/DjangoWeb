@@ -1,0 +1,52 @@
+{% extends 'myapp/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %} {% trans "Список желаний" %} {% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-10 px-4">
+    <h1 class="text-3xl font-bold mb-8 text-center">{% trans "Мой список желаний" %} ❤️</h1>
+
+    {% if wishlist|length > 0 %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for product in wishlist %}
+            <div class="bg-white rounded-lg shadow-md p-4 relative group hover:shadow-lg transition">
+
+                <a href="{% url 'wishlist_remove' product.id %}" class="absolute top-2 right-2 bg-white rounded-full p-1 text-gray-400 hover:text-red-600 transition z-10 shadow-sm" title="{% trans 'Удалить' %}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </a>
+
+                <a href="{% url 'product_detail' product.slug %}">
+                    <div class="w-full overflow-hidden rounded-md bg-gray-50 border border-gray-100 mb-4 flex items-center justify-center h-48">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="max-w-full max-h-full object-contain p-2">
+                        {% else %}
+                            <img src="{% static 'images/Photo.png' %}" class="max-w-full max-h-full object-contain p-2">
+                        {% endif %}
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 truncate">{{ product.name }}</h3>
+                    <p class="text-gray-500 text-sm mb-2">{{ product.brand.name }}</p>
+                    <p class="text-xl font-bold text-gray-900">{{ product.price }} грн</p>
+                </a>
+
+                <form action="{% url 'cart_add' product.id %}" method="post" class="mt-4">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+                        {% trans "В корзину" %}
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-20">
+            <p class="text-xl text-gray-500 mb-6">{% trans "Ваш список желаний пуст." %}</p>
+            <a href="{% url 'home' %}" class="bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition">
+                {% trans "Перейти к покупкам" %}
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

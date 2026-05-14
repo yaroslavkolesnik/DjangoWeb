@@ -1,0 +1,48 @@
+{% extends 'myapp/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Вход" %}{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-[60vh] py-12 bg-gray-50">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md border border-gray-100">
+
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">{% trans "Вход в систему" %}</h2>
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded text-sm mb-4">
+                    {% trans "Неверное имя пользователя или пароль." %}
+                </div>
+            {% endif %}
+
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="id_username">
+                    {% trans "Имя пользователя" %}
+                </label>
+                <input type="text" name="username" autofocus required id="id_username"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="id_password">
+                    {% trans "Пароль" %}
+                </label>
+                <input type="password" name="password" required id="id_password"
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200">
+                {% trans "Войти" %}
+            </button>
+        </form>
+
+        <p class="mt-4 text-center text-sm text-gray-600">
+            {% trans "Нет аккаунта?" %}
+            <a href="{% url 'register' %}" class="text-blue-600 hover:underline font-semibold">{% trans "Зарегистрироваться" %}</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

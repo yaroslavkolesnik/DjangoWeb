@@ -1,0 +1,28 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label='myapp' %}">Myapp</a>
+&rsaquo; <a href="{% url 'admin:myapp_product_changelist' %}">Товары</a>
+&rsaquo; Импорт CSV
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>Импорт товаров из CSV</h1>
+<p>Загрузите файл CSV. Формат: name, brand, price, published (True/False).</p>
+
+<form action="." method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="margin-bottom: 20px;">
+        <input type="file" name="csv_file" required>
+    </div>
+
+    <div>
+        <input type="submit" value="Загрузить" class="default" style="padding: 10px 20px; background: #417690; color: white; border: none; cursor: pointer;">
+        <a href="../" style="margin-left: 10px; color: #417690;">Отмена</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'myapp/base.html' %}
+{% load i18n %}
+
+{# Заголовок вкладки браузера #}
+{% block title %} {% trans "Заказ оформлен" %} - DesignShop {% endblock %}
+
+{# Убираем хлебные крошки, чтобы не отвлекать от успеха #}
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="min-h-[60vh] flex flex-col justify-center items-center py-12">
+    <div class="max-w-xl mx-auto px-4 text-center">
+
+        <div class="bg-green-100 text-green-600 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8 shadow-sm">
+            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
+            {% trans "Спасибо за покупку!" %}
+        </h1>
+
+        <div class="text-lg text-gray-600 mb-8 space-y-2">
+            <p>
+                {% trans "Ваш заказ" %}
+                <span class="font-bold text-gray-900 text-xl">#{{ order.id }}</span>
+                {% trans "успешно оформлен." %}
+            </p>
+            <p class="text-sm text-gray-500">
+                {% trans "Наш менеджер свяжется с вами в ближайшее время для уточнения деталей." %}
+            </p>
+        </div>
+
+        <a href="{% url 'home' %}" class="inline-block bg-gray-900 text-white font-semibold px-8 py-3 rounded-lg hover:bg-gray-800 transition transform hover:-translate-y-1 shadow-lg">
+            {% trans "Продолжить покупки" %}
+        </a>
+
+    </div>
+</div>
+{% endblock %}
