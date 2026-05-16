@@ -96,9 +96,9 @@ DATABASES = {
 }
 
 # Настройка PostgreSQL для продакшена
+# Настройка PostgreSQL для продакшена
 if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.parse(os.environ.get(' postgres://ufe9176hch41ri:p53b24659ce2bbbe91fe56ee30b82d27c758e82d7d6a83bf76e5f24b9ccf6eed8@c5cqb8h0eop3g3.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/dfl0sqt9s0njl8'))
-
+    DATABASES['default'] = dj_database_url.parse(os.environ.get('DATABASE_URL'))
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
