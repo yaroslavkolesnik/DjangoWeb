@@ -47,19 +47,25 @@ def index(request):
     if rating_filter and rating_filter.isdigit():
         products_list = products_list.filter(avg_rating__gte=int(rating_filter))
 
-    # ЛОГИКА ДЛЯ ДИНАМИЧЕСКИХ ХАРАКТЕРИСТИК (JSON)
-    # А. Сначала собираем все возможные ключи и значения из УЖЕ отфильтрованных товаров (или всех)
-    # Мы используем словарь: {'Цвет': {'Белый', 'Черный'}, 'ОС': {'Android', 'iOS'}}
+        # ЛОГИКА ДЛЯ ДИНАМИЧЕСКИХ ХАРАКТЕРИСТИК (JSON)
+        # А. Сначала собираем все возможные ключи и значения из УЖЕ отфильтрованных товаров (или всех)
     available_specs = {}
 
-    # Лучше собирать спецификации ДО применения фильтров по самим спецификациям,
-    # но ПОСЛЕ фильтров бренда/категории, чтобы не показывать лишнего.
+        # Лучше собирать спецификации ДО применения фильтров по самим спецификациям,
+        # но ПОСЛЕ фильтров бренда/категории, чтобы не показывать лишнего.
     for product in products_list:
         if product.specifications:
             for key, value in product.specifications.items():
                 if key not in available_specs:
                     available_specs[key] = set()
-                available_specs[key].add(value)
+
+                    # ИСПРАВЛЕНИЕ: Проверяем, является ли значение списком
+                if isinstance(value, list):
+                        # Если в JSON хранится массив ["Для телефонів", "Для планшетів"]
+                    available_specs[key].update(value)
+                else:
+                        # Если это обычная строка "Білий"
+                    available_specs[key].add(value)
 
     selected_specs = {}
 
